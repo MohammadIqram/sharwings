@@ -30,12 +30,12 @@ const HomePage = () => {
 				</p>
 
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-					{categories.map((category) => (
+					{categories?.map((category) => (
 						<CategoryItem category={category} key={category.name} />
 					))}
 				</div>
 
-				{!isLoading && products.length > 0 && <FeaturedProducts featuredProducts={products} />}
+				{!isLoading && products?.length > 0 && <FeaturedProducts featuredProducts={products} />}
 			</div>
 		</div>
 	);
