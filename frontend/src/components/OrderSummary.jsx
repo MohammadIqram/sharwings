@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MoveRight } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios";
+import { useUserStore } from "../stores/useUserStore";
 
 const stripePromise = loadStripe("pk_test_51Q3GqKgr4PNFBXCpGU5EelE2IYI976hFYJU3Pgkil23CvVcpmRDm7VEh1LUC7v10fLzag6nidyOYTDOqZfHe6pG00bqNUECSc");
 
@@ -14,6 +15,7 @@ const OrderSummary = () => {
 	const formattedSubtotal = subtotal.toFixed(2);
 	const formattedTotal = total.toFixed(2);
 	const formattedSavings = savings.toFixed(2);
+	const { user } = useUserStore();
 
 	const handlePayment = async () => {
 		const stripe = await stripePromise;
@@ -27,6 +29,50 @@ const OrderSummary = () => {
 
 		if (result.error) {
 			console.error("Error:", result.error);
+		}
+	};
+
+	const handlePayment2 = async () => {
+		try {
+			const res = await axios.post("/payments/create-checkout-session-razorpay", {
+				products: cart,
+				couponCode: coupon ? coupon.code : null,
+			});
+	
+			const { id, totalAmount } = res.data;
+	
+			// Razorpay options
+			const options = {
+				key: 'rzp_test_9o4hiWwBlHD2M9', // Replace with your Razorpay key ID
+				amount: totalAmount * 100, // Amount in paise
+				currency: "INR",
+				name: "Sharwings",
+				description: "Purchase Description",
+				order_id: id,
+				handler: function (response) {
+					alert("Payment successful!");
+					console.log(response);
+				},
+				prefill: {
+					name: user?.name,
+					email: user?.email,
+				},
+				theme: {
+					color: "#3399cc",
+				},
+			};
+	
+			// Initialize Razorpay
+			const razorpay = new window.Razorpay(options);
+			razorpay.open();
+	
+			razorpay.on("payment.failed", function (response) {
+				console.error("Payment failed:", response.error);
+				alert("Payment failed. Please try again.");
+			});
+		} catch (error) {
+			console.error("Error initiating Razorpay payment:", error);
+			alert("Error initiating payment. Please try again.");
 		}
 	};
 
@@ -69,7 +115,7 @@ const OrderSummary = () => {
 					className='flex w-full items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
-					onClick={handlePayment}
+					onClick={handlePayment2}
 				>
 					Proceed to Checkout
 				</motion.button>
