@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
+import toast from "react-hot-toast";
 
 const categories = ["fans", "bulbs", "switches", "sockets-and-extension", "wires", "water-heaters"];
 
@@ -12,6 +13,7 @@ const CreateProductForm = () => {
 		price: "",
 		category: "",
 		image: "",
+		quantity: 0,
 	});
 
 	const { createProduct, loading } = useProductStore();
@@ -20,7 +22,8 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			// setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
+			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
+			toast.success("Product created successfully!");
 		} catch {
 			console.log("error creating a product");
 		}
@@ -95,6 +98,24 @@ const CreateProductForm = () => {
 						value={newProduct.price}
 						onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
 						step='0.01'
+						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
+						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
+						 focus:border-emerald-500'
+						required
+					/>
+				</div>
+
+				<div>
+					<label htmlFor='quantity' className='block text-sm font-medium text-gray-300'>
+						Quantity
+					</label>
+					<input
+						type='number'
+						id='quantity'
+						name='quantity'
+						value={newProduct.quantity}
+						onChange={(e) => setNewProduct({ ...newProduct, quantity: e.target.value })}
+						step='1'
 						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
 						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
 						 focus:border-emerald-500'
