@@ -5,6 +5,7 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
         name: "",
         description: "",
         price: "",
+        quantity: 0
     });
 
     useEffect(() => {
@@ -13,6 +14,7 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
                 name: product.name || "",
                 description: product.description || "",
                 price: product.price || "",
+                quantity: product.quantity || 0
             });
         }
     }, [product]);
@@ -60,6 +62,17 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
                             type="number"
                             name="price"
                             value={form.price}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-300 mb-1">Quantity</label>
+                        <input
+                            type="number"
+                            name="quantity"
+                            value={form.quantity}
                             onChange={handleChange}
                             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
                             required
