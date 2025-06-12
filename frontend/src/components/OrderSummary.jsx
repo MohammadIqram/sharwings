@@ -2,11 +2,8 @@ import { motion } from "framer-motion";
 import { useCartStore } from "../stores/useCartStore";
 import { Link } from "react-router-dom";
 import { MoveRight } from "lucide-react";
-import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios";
 import { useUserStore } from "../stores/useUserStore";
-
-const stripePromise = loadStripe("pk_test_51Q3GqKgr4PNFBXCpGU5EelE2IYI976hFYJU3Pgkil23CvVcpmRDm7VEh1LUC7v10fLzag6nidyOYTDOqZfHe6pG00bqNUECSc");
 
 const OrderSummary = () => {
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
@@ -17,20 +14,20 @@ const OrderSummary = () => {
 	const formattedSavings = savings.toFixed(2);
 	const { user } = useUserStore();
 
-	const handlePayment = async () => {
-		const stripe = await stripePromise;
-		const res = await axios.post("/payments/create-checkout-session", {
-			products: cart,
-			couponCode: coupon ? coupon.code : null,
-		});
+	// const handlePayment = async () => {
+	// 	const stripe = await stripePromise;
+	// 	const res = await axios.post("/payments/create-checkout-session", {
+	// 		products: cart,
+	// 		couponCode: coupon ? coupon.code : null,
+	// 	});
 
-		const session = res.data;
-		window.location.href = session.paymentURL;
+	// 	const session = res.data;
+	// 	window.location.href = session.paymentURL;
 
-		if (result.error) {
-			console.error("Error:", result.error);
-		}
-	};
+	// 	if (result.error) {
+	// 		console.error("Error:", result.error);
+	// 	}
+	// };
 
 	const handlePayment2 = async () => {
 		try {
@@ -50,8 +47,7 @@ const OrderSummary = () => {
 				description: "Purchase Description",
 				order_id: id,
 				handler: function (response) {
-					alert("Payment successful!");
-					console.log(response);
+					window.location.href = `/purchase-success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&token=${response.razorpay_signature}`;
 				},
 				prefill: {
 					name: user?.name,
