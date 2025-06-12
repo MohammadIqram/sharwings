@@ -251,6 +251,14 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
             await createNewCoupon(req.user._id);
         }
 
+	// updating product quantities
+	for (const product of products) {
+		await Product.findByIdAndUpdate(
+			product._id,
+			{ $inc: { quantity: -product.quantity } },
+		);
+	}	    
+
         res.status(200).json({ id: order.id, totalAmount: totalAmount / 100 });
     } catch (error) {
         console.error("Error processing checkout:", error);
