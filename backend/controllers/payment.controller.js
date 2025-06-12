@@ -2,6 +2,7 @@ import Coupon from "../models/coupon.model.js";
 import Order from "../models/order.model.js";
 import { stripe } from "../lib/stripe.js";
 import razorpay from "../lib/razorpay.js";
+import crypto from "crypto";
 
 export const createCheckoutSession = async (req, res) => {
 	try {
@@ -117,6 +118,62 @@ export const checkoutSuccess = async (req, res) => {
 		console.error("Error processing successful checkout:", error);
 		res.status(500).json({ message: "Error processing successful checkout", error: error.message });
 	}
+};
+
+export const razorpaySuccess = async (req, res) => {
+    try {
+		console.log("Razorpay success request body:", req.body);
+        const { paymentId, orderId, signature } = req.body;
+
+        // Verify signature
+        const generatedSignature = crypto
+            .createHmac("sha256", process.env.RAZORPAY_TOKEN_SECRET)
+            .update(orderId + "|" + paymentId)
+            .digest("hex");
+
+        if (generatedSignature !== signature) {
+            return res.status(400).json({ success: false, message: "Invalid signature" });
+        }
+
+        // Fetch order notes for userId, couponCode, products
+        const razorpayOrder = await razorpay.orders.fetch(orderId);
+        const notes = razorpayOrder.notes;
+        const userId = notes.userId;
+        const couponCode = notes.couponCode;
+        const products = JSON.parse(notes.products);
+
+        // Deactivate coupon if used
+        if (couponCode) {
+            await Coupon.findOneAndUpdate(
+                { code: couponCode, userId },
+                { isActive: false }
+            );
+        }
+
+        // Create new order
+        const newOrder = new Order({
+            user: userId,
+            products: products.map((product) => ({
+                product: product.id,
+                quantity: product.quantity,
+                price: product.price,
+            })),
+            totalAmount: razorpayOrder.amount / 100, // convert from paise to INR
+            razorpayOrderId: orderId,
+            razorpayPaymentId: paymentId,
+        });
+
+        await newOrder.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Payment successful, order created, and coupon deactivated if used.",
+            orderId: newOrder._id,
+        });
+    } catch (error) {
+        console.error("Error processing Razorpay success:", error);
+        res.status(500).json({ message: "Error processing Razorpay success", error: error.message });
+    }
 };
 
 async function createStripeCoupon(discountPercentage) {
