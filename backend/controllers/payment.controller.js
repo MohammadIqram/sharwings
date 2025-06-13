@@ -3,6 +3,7 @@ import Order from "../models/order.model.js";
 import { stripe } from "../lib/stripe.js";
 import razorpay from "../lib/razorpay.js";
 import crypto from "crypto";
+import Product from "../models/product.model.js";
 
 export const createCheckoutSession = async (req, res) => {
 	try {
