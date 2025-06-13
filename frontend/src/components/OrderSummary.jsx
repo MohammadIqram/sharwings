@@ -40,7 +40,7 @@ const OrderSummary = () => {
 	
 			// Razorpay options
 			const options = {
-				key: 'rzp_test_9o4hiWwBlHD2M9', // Replace with your Razorpay key ID
+				key: 'rzp_live_mHDXkBHoa1H26S', // Replace with your Razorpay key ID
 				amount: totalAmount * 100, // Amount in paise
 				currency: "INR",
 				name: "Sharwings",
