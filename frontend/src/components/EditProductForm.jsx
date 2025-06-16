@@ -5,6 +5,7 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
         name: "",
         description: "",
         price: "",
+        salePrice: "",
         quantity: 0
     });
 
@@ -14,6 +15,7 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
                 name: product.name || "",
                 description: product.description || "",
                 price: product.price || "",
+                salePrice: product.salePrice || "",
                 quantity: product.quantity || 0
             });
         }
@@ -62,6 +64,17 @@ const EditProductModal = ({ isOpen, product, onClose, onSave }) => {
                             type="number"
                             name="price"
                             value={form.price}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 rounded bg-gray-700 text-white"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-300 mb-1">Cut-off Price</label>
+                        <input
+                            type="number"
+                            name="salePrice"
+                            value={form.salePrice}
                             onChange={handleChange}
                             className="w-full px-3 py-2 rounded bg-gray-700 text-white"
                             required

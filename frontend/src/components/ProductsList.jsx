@@ -59,6 +59,12 @@ const ProductsList = () => {
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
 						>
+							Sale Price
+						</th>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
+						>
 							Quantity
 						</th>
 						<th
@@ -102,6 +108,9 @@ const ProductsList = () => {
 							</td>
 							<td className='px-6 py-4 whitespace-nowrap'>
 								<div className='text-sm text-gray-300'>₹{product.price.toFixed(2)}</div>
+							</td>
+							<td className='px-6 py-4 whitespace-nowrap'>
+								<div className='text-sm text-gray-300'>₹{product.salePrice?.toFixed(2)}</div>
 							</td>
 							<td className='px-6 py-4 whitespace-nowrap'>
 								<div className='text-sm text-gray-300'>{product.quantity} Units</div>

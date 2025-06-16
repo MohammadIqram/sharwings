@@ -11,6 +11,7 @@ const CreateProductForm = () => {
 		name: "",
 		description: "",
 		price: "",
+		salePrice: "",
 		category: "",
 		image: "",
 		quantity: 0,
@@ -22,7 +23,7 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
+			setNewProduct({ name: "", description: "", price: "", salePrice: "", category: "", image: "" });
 			toast.success("Product created successfully!");
 		} catch {
 			console.log("error creating a product");
@@ -97,6 +98,24 @@ const CreateProductForm = () => {
 						name='price'
 						value={newProduct.price}
 						onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+						step='0.01'
+						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
+						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
+						 focus:border-emerald-500'
+						required
+					/>
+				</div>
+
+					<div>
+					<label htmlFor='salePrice' className='block text-sm font-medium text-gray-300'>
+						salePrice
+					</label>
+					<input
+						type='number'
+						id='salePrice'
+						name='salePrice'
+						value={newProduct.salePrice}
+						onChange={(e) => setNewProduct({ ...newProduct, salePrice: e.target.value })}
 						step='0.01'
 						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
 						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500

@@ -5,6 +5,7 @@ import { useCartStore } from "../stores/useCartStore";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Logo from "../../public/logo.jpeg";
 
 const Navbar = () => {
   const { user, logout } = useUserStore();
@@ -23,7 +24,7 @@ const Navbar = () => {
             to="/"
             className="text-2xl font-bold text-emerald-400 items-center space-x-2 flex"
           >
-            Sharwings
+            <img src={Logo} alt="logo" className="w-36 h-16 object-fit" />
           </Link>
           {/* Hamburger for mobile */}
           <button

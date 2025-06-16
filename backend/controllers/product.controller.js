@@ -41,7 +41,7 @@ export const getFeaturedProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 	try {
-		const { name, description, price, image, category, quantity } = req.body;
+		const { name, description, price, salePrice, image, category, quantity } = req.body;
 
 		let cloudinaryResponse = null;
 
@@ -53,6 +53,7 @@ export const createProduct = async (req, res) => {
 			name,
 			description,
 			price,
+			salePrice,
 			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
 			category,
 			quantity
@@ -158,8 +159,7 @@ async function updateFeaturedProductsCache() {
 export const editProductDetails = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, price, category, image, quantity } = req.body;
-		console.log(req.body, id);
+        const { name, description, price, salePrice, category, image, quantity } = req.body;
 
         const product = await Product.findById(id);
         if (!product) {
@@ -172,7 +172,8 @@ export const editProductDetails = async (req, res) => {
         if (price !== undefined) product.price = price;
         if (category !== undefined) product.category = category;
         if (image !== undefined) product.image = image;
-	if (quantity !== undefined) product.quantity = quantity;
+		if (salePrice !== undefined) product.salePrice = salePrice;
+		if (quantity !== undefined) product.quantity = quantity;
 
         const updatedProduct = await product.save();
 

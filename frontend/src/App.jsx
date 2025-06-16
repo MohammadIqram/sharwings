@@ -5,7 +5,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import CategoryPage from "./pages/CategoryPage";
-
+import AboutUs from "./pages/AboutUs";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
@@ -16,6 +16,8 @@ import CartPage from "./pages/CartPage";
 import { useCartStore } from "./stores/useCartStore";
 import PurchaseSuccessPage from "./pages/PurchaseSuccessPage";
 import PurchaseCancelPage from "./pages/PurchaseCancelPage";
+import ReturnPolicy from "./pages/ReturnPolicy";
+import UseScrollRestoration from "./components/UseScrollRestoration";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -47,6 +49,8 @@ function App() {
 					<Route path='/' element={<HomePage />} />
 					<Route path='/signup' element={!user ? <SignUpPage /> : <Navigate to='/' />} />
 					<Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/' />} />
+					<Route path='/aboutus' element={<AboutUs />} />
+					<Route path="/return-policy" element={<ReturnPolicy />} />
 					<Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}
@@ -62,6 +66,7 @@ function App() {
 				<Footer />
 			</div>
 			<Toaster />
+			<UseScrollRestoration />
 		</div>
 	);
 }
