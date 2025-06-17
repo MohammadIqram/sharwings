@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import CategoryItem from "../components/CategoryItem";
 import { useProductStore } from "../stores/useProductStore";
 import FeaturedProducts from "../components/FeaturedProducts";
-import HomePageBanner from "../components/homePageBanner";
+import HomePageBanner from "../components/HomePageBanner";
 
 const categories = [
 	{ href: "/fans", name: "Fans", imageUrl: "/fans.webp" },
