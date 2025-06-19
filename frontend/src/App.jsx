@@ -18,6 +18,7 @@ import PurchaseSuccessPage from "./pages/PurchaseSuccessPage";
 import PurchaseCancelPage from "./pages/PurchaseCancelPage";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import UseScrollRestoration from "./components/UseScrollRestoration";
+import Orders from "./pages/Orders";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -51,6 +52,7 @@ function App() {
 					<Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/' />} />
 					<Route path='/aboutus' element={<AboutUs />} />
 					<Route path="/return-policy" element={<ReturnPolicy />} />
+					<Route path="/orders" element={user ? <Orders /> : <Navigate to='/login' />} />
 					<Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}
