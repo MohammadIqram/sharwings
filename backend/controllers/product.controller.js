@@ -1,6 +1,7 @@
 import { redis } from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
 import Product from "../models/product.model.js";
+import ClaimWarranty from "../models/claimwarranty.model.js";
 
 export const getAllProducts = async (req, res) => {
 	try {
@@ -185,4 +186,33 @@ export const editProductDetails = async (req, res) => {
         console.log("Error in editProductDetails controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
     }
+};
+
+export const claimWarranty = async (req, res) => {
+	try {
+		const { productName, reason, photo } = req.body;
+
+		if (!productName || !reason || !photo) {
+			return res.status(400).json({ message: "All fields are required" });
+		}
+
+		// Upload photo to Cloudinary
+		const cloudinaryResponse = await cloudinary.uploader.upload(photo, { folder: "warranty_claims" });
+		console.log("cloudinaryResponse", cloudinaryResponse);
+		const imageUrl = cloudinaryResponse.secure_url;
+		console.log(imageUrl);
+		await ClaimWarranty.create({
+			productName,
+			reason,
+			imageUrl
+		});
+
+		// Here you would typically save the warranty claim to your database
+		// For demonstration, we'll just return the data
+		res.status(201).json({
+			success: true,
+		});
+	} catch {
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
 };

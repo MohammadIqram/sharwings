@@ -84,14 +84,6 @@ const Navbar = () => {
 
             {user ? (
               <AccountDropdown />
-            //   <button
-            //     className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
-						// rounded-md flex items-center transition duration-300 ease-in-out"
-            //     onClick={logout}
-            //   >
-            //     <LogOut size={18} />
-            //     <span className="hidden sm:inline ml-2">Log Out</span>
-            //   </button>
             ) : (
               <>
                 <Link
@@ -137,6 +129,13 @@ const Navbar = () => {
               className="text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out"
             >
               About us
+            </Link>
+            <Link
+              to={"/warrantyclaim"}
+              onClick={handleClose}
+              className="text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out"
+            >
+              Claim warranty
             </Link>
             {user && (
               <Link
