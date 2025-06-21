@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
+import ReturnModal from "../components/OrderReturnForm";
+import OrderReturnProgressbar from "../components/OrderReturnProgressbar";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [showReturn, setShowReturn] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const setModal = (e) => {
+    setSelectedOrder(e.target?.dataset?.orderid || null);
+    setShowReturn((prev) => !prev);
+  }
 
   useEffect(() => {
     // Replace with API call in real app
@@ -12,6 +21,7 @@ export default function Orders() {
             const res = await axios.get("/orders/history");
             if (res.data.success) {
                 setOrders(res.data.orders);
+                console.log(res.data.orders);
             } else {
                 setOrders([]);
             }
@@ -53,19 +63,28 @@ export default function Orders() {
                       <div className="font-bold text-emerald-600 mt-2 text-2xl">₹{item.price}</div>
                     </div>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1 rounded bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition">Return</button>
+                      <button className="px-3 py-1 rounded bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition" data-orderid={order._id} onClick={setModal}>Return</button>
                       <button className="px-3 py-1 rounded bg-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-300 transition">Get Help</button>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-between items-center mt-4">
+                    {
+                      order.returnRequest && (
+                      <div>
+                        <OrderReturnProgressbar request={order.returnRequest} />
+                      </div>
+                      )
+                    }
                 <span className="font-bold text-lg text-gray-800">Order Total: ₹{order.totalAmount}</span>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <ReturnModal open={showReturn} onClose={setModal} selectedOrder={selectedOrder} />
     </div>
   );
 }

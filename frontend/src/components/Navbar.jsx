@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../../public/logo.jpeg";
+import AccountDropdown from "./AccountDropDown";
 
 const Navbar = () => {
   const { user, logout } = useUserStore();
@@ -82,14 +83,15 @@ const Navbar = () => {
             )}
 
             {user ? (
-              <button
-                className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
-						rounded-md flex items-center transition duration-300 ease-in-out"
-                onClick={logout}
-              >
-                <LogOut size={18} />
-                <span className="hidden sm:inline ml-2">Log Out</span>
-              </button>
+              <AccountDropdown />
+            //   <button
+            //     className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 
+						// rounded-md flex items-center transition duration-300 ease-in-out"
+            //     onClick={logout}
+            //   >
+            //     <LogOut size={18} />
+            //     <span className="hidden sm:inline ml-2">Log Out</span>
+            //   </button>
             ) : (
               <>
                 <Link
