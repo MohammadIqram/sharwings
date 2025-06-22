@@ -1,18 +1,49 @@
-import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from "lucide-react";
+import { ShoppingCart, UserPlus, LogIn, LogOut, Lock, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../../public/logo.jpeg";
 import AccountDropdown from "./AccountDropDown";
+import axiosInstance from "../lib/axios";
 
 const Navbar = () => {
   const { user, logout } = useUserStore();
   const isAdmin = user?.role === "admin";
   const { cart } = useCartStore();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef();
+
+    // Debounced search (simple version)
+  const handleSearch = async (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    if (value.trim().length === 0) {
+      setResults([]);
+      setShowDropdown(false);
+      return;
+    }
+    try {
+      // Replace with your actual API endpoint
+      const res = await axiosInstance.get(`/products/search?name=${encodeURIComponent(value)}`);
+      setResults(res.data.products || []);
+      setShowDropdown(true);
+    } catch {
+      setResults([]);
+      setShowDropdown(false);
+    }
+  };
+
+  // Hide dropdown when clicking outside
+  const handleBlur = (e) => {
+    setTimeout(() => setShowDropdown(false), 120);
+  };
 
   const handleToggle = () => setMobileOpen((prev) => !prev);
   const handleClose = () => setMobileOpen(false);
@@ -35,6 +66,61 @@ const Navbar = () => {
           >
             {mobileOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
+                    {/* Search Bar */}
+          <div className="relative flex-1 mx-4 max-w-lg hidden lg:block">
+            <div className="flex items-center bg-gray-800 rounded-lg px-3 py-2 shadow focus-within:ring-2 ring-emerald-400">
+              <Search className="text-emerald-400 mr-2" size={20} />
+              <input
+                ref={searchRef}
+                type="text"
+                value={search}
+                onChange={handleSearch}
+                onFocus={() => setShowDropdown(true)}
+                onBlur={handleBlur}
+                placeholder="Search products..."
+                className="bg-transparent outline-none text-white w-full placeholder-gray-400"
+              />
+            </div>
+            {/* Dropdown Results */}
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute left-0 right-0 mt-2 bg-gray-900 border border-emerald-700 rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto"
+                >
+                  {search && results.length === 0 ? (
+                    <div className="px-4 py-3 text-gray-400">
+                      No products found.
+                    </div>
+                  ) : (
+                    <ul>
+                      {results.map((product) => (
+                        <li key={product._id}>
+                          <Link
+                            to={`/product/${product._id}`}
+                            className="flex items-center gap-3 px-4 py-2 hover:bg-emerald-900 transition text-white"
+                            onClick={() => {
+                              setShowDropdown(false);
+                              setSearch("");
+                            }}
+                          >
+                            {product.image ? (
+                              <img src={product.image} alt={product.name} className="w-8 h-8 rounded object-cover" />
+                            ) : (
+                              <Search size={28} className="text-emerald-400" />
+                            )}
+                            <span className="font-medium">{product.name}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           <nav className="flex flex-wrap items-center gap-4 hidden lg:flex">
             <Link
               to={"/"}

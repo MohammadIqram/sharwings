@@ -9,6 +9,7 @@ import {
 	toggleFeaturedProduct,
 	editProductDetails,
 	claimWarranty,
+	searchProduct
 } from "../controllers/product.controller.js";
 import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
 
@@ -23,5 +24,6 @@ router.patch("/:id", protectRoute, adminRoute, toggleFeaturedProduct);
 router.delete("/:id", protectRoute, adminRoute, deleteProduct);
 router.post("/id/:id", protectRoute, adminRoute, editProductDetails);
 router.post("/warranty/claim", protectRoute, claimWarranty);
+router.get("/search", searchProduct);
 
 export default router;

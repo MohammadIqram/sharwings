@@ -1,3 +1,4 @@
+import { text } from "express";
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
@@ -5,6 +6,7 @@ const productSchema = new mongoose.Schema(
 		name: {
 			type: String,
 			required: true,
+			text: true,
 		},
 		description: {
 			type: String,

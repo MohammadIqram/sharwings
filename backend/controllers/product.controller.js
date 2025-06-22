@@ -216,3 +216,24 @@ export const claimWarranty = async (req, res) => {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
+
+export const searchProduct = async (req, res) => {
+	try {
+		const { name } = req.query;
+		if (!name) {
+			return res.status(400).json({ message: "Query parameter is required" });
+		}
+
+		const products = await Product.find({
+			name: { $regex: name, $options: "i" } // case-insensitive search
+		});
+
+		if (products.length === 0) {
+			return res.status(404).json({ message: "No products found" });
+		}
+
+		res.json({ products });
+	} catch {
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
