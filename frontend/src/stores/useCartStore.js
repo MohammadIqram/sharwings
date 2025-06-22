@@ -70,17 +70,38 @@ export const useCartStore = create((set, get) => ({
 		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
 		get().calculateTotals();
 	},
-	updateQuantity: async (productId, quantity) => {
+	updateQuantity: async (productId, quantity, action) => {
 		if (quantity === 0) {
 			get().removeFromCart(productId);
 			return;
 		}
-
-		await axios.put(`/cart/${productId}`, { quantity });
-		set((prevState) => ({
-			cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
-		}));
-		get().calculateTotals();
+		try {
+			if (action === "-") {
+				// Just update cart locally and backend, no need to check stock
+				await axios.put(`/cart/${productId}`, { quantity });
+				set((prevState) => ({
+					cart: prevState.cart.map((item) =>
+						item._id === productId ? { ...item, quantity } : item
+					),
+				}));
+				get().calculateTotals();
+			} else if (action === "+") {
+				// Check stock before incrementing
+				const updateQtyReq = await axios.post("products/quantity", { id: productId, quantity });
+				if (updateQtyReq.data.success) {
+					await axios.put(`/cart/${productId}`, { quantity });
+					set((prevState) => ({
+						cart: prevState.cart.map((item) =>
+							item._id === productId ? { ...item, quantity } : item
+						),
+					}));
+					get().calculateTotals();
+				}
+			}
+		} catch (error) {
+			toast.error("this is the last piece of this product, you cannot update the quantity to more than 1");
+			return;
+		}
 	},
 	calculateTotals: () => {
 		const { cart, coupon } = get();

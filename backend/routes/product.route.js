@@ -10,7 +10,8 @@ import {
 	editProductDetails,
 	claimWarranty,
 	searchProduct,
-	getPdpPage
+	getPdpPage,
+	updateProductQuantity
 } from "../controllers/product.controller.js";
 import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
 
@@ -27,5 +28,6 @@ router.post("/id/:id", protectRoute, adminRoute, editProductDetails);
 router.post("/warranty/claim", protectRoute, claimWarranty);
 router.get("/search", searchProduct);
 router.get("/:name", getPdpPage);
+router.post("/quantity", protectRoute, updateProductQuantity);
 
 export default router;

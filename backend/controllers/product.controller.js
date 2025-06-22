@@ -256,3 +256,32 @@ export const getPdpPage = async (req, res) => {
 		return res.status(500).json({ message: "Server error", error: error.message });
 	}
 }
+
+export const updateProductQuantity = async (req, res) => {
+	try {
+		const { id, quantity } = req.body;
+		console.log(id, quantity);
+
+		if (quantity < 0) {
+			return res.status(400).json({ message: "Quantity cannot be negative" });
+		}
+
+		const product = await Product.findById(id).select("quantity");
+		if (!product) {
+			return res.status(404).json({ message: "Product not found" });
+		}
+
+		if (product.quantity < quantity) {
+			return res.status(400).json({
+				success: false,
+				messsage: "this is the last piece of this product, you cannot update the quantity to more than 1",
+			});
+		}
+		return res.status(200).json({
+			success: true,
+			message: "Product quantity updated successfully",
+		})
+	} catch (error) {
+		res.status(500).json({ success: false, message: "Server error", error: error.message });
+	}
+}
