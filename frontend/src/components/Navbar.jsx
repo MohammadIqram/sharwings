@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../../public/logo.jpeg";
-import AccountDropDown from "./AccountDropDown";
+import AccountsDropDown from "./AccountsDropDown";
 import axiosInstance from "../lib/axios";
 
 const Navbar = () => {
@@ -169,7 +169,7 @@ const Navbar = () => {
             )}
 
             {user ? (
-              <AccountDropDown />
+              <AccountsDropDown />
             ) : (
               <>
                 <Link

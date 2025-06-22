@@ -3,7 +3,7 @@ import { User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore";
 
-export default function AccountDropdown() {
+export default function AccountsDropDown () {
   const [open, setOpen] = useState(false);
   const { user, logout } = useUserStore();
 
