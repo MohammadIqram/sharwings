@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-	baseURL: "https://sharwings.in/api",
+	baseURL: "https://api.sharwings.in/api",
 	withCredentials: true, // send cookies to the server
 });
 
