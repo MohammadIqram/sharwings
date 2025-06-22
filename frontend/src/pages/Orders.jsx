@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
 import ReturnModal from "../components/OrderReturnForm";
-import OrderReturnProgressbar from "../components/OrderReturnProgressbar";
+import OrderReturnProgressBar from "../components/OrderReturnProgressBar";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -73,7 +73,7 @@ export default function Orders() {
                     {
                       order.returnRequest && (
                       <div>
-                        <OrderReturnProgressbar request={order.returnRequest} />
+                        <OrderReturnProgressBar request={order.returnRequest} />
                       </div>
                       )
                     }
