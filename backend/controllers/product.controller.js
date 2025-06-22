@@ -237,3 +237,22 @@ export const searchProduct = async (req, res) => {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
+
+export const getPdpPage = async (req, res) => {
+	try {
+		const { name } = req.params;
+		console.log("name", name);
+		const product = await Product.findOne({ name }).lean();
+		if (!product) {
+			return res.status(404).json({ message: "Product not found" });
+		}
+
+		return res.status(200).json({
+			success: true,
+			product: product
+		});
+	} catch (error) {
+		console.log("Error in getPdpPage controller", error.message);
+		return res.status(500).json({ message: "Server error", error: error.message });
+	}
+}

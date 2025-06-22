@@ -99,7 +99,7 @@ const Navbar = () => {
                       {results.map((product) => (
                         <li key={product._id}>
                           <Link
-                            to={`/product/${product._id}`}
+                            to={`/${product.name}`}
                             className="flex items-center gap-3 px-4 py-2 hover:bg-emerald-900 transition text-white"
                             onClick={() => {
                               setShowDropdown(false);

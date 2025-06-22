@@ -9,7 +9,8 @@ import {
 	toggleFeaturedProduct,
 	editProductDetails,
 	claimWarranty,
-	searchProduct
+	searchProduct,
+	getPdpPage
 } from "../controllers/product.controller.js";
 import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
 
@@ -25,5 +26,6 @@ router.delete("/:id", protectRoute, adminRoute, deleteProduct);
 router.post("/id/:id", protectRoute, adminRoute, editProductDetails);
 router.post("/warranty/claim", protectRoute, claimWarranty);
 router.get("/search", searchProduct);
+router.get("/:name", getPdpPage);
 
 export default router;

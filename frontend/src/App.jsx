@@ -20,6 +20,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import UseScrollRestoration from "./components/UseScrollRestoration";
 import Orders from "./pages/Orders";
 import ClaimWarrantyForm from "./pages/ClaimWarrantyForm";
+import Pdp from "./pages/Pdp";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -55,6 +56,7 @@ function App() {
 					<Route path="/return-policy" element={<ReturnPolicy />} />
 					<Route path="/orders" element={user ? <Orders /> : <Navigate to='/login' />} />
 					<Route path="/warrantyclaim" element={user ? <ClaimWarrantyForm /> : <Navigate to='/login' />} />
+					<Route path="/:name" element={<Pdp />} />
 					<Route
 						path='/secret-dashboard'
 						element={user?.role === "admin" ? <AdminPage /> : <Navigate to='/login' />}
