@@ -203,7 +203,7 @@ async function createNewCoupon(userId) {
 
 export const createCheckoutSessionRazorpay = async (req, res) => {
     try {
-        const { products, couponCode } = req.body;
+        const { products } = req.body;
 
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({ error: "Invalid or empty products array" });
@@ -223,14 +223,6 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
             };
         });
 
-        let coupon = null;
-        if (couponCode) {
-            coupon = await Coupon.findOne({ code: couponCode, userId: req.user._id, isActive: true });
-            if (coupon) {
-                totalAmount -= Math.round((totalAmount * coupon.discountPercentage) / 100);
-            }
-        }
-
         const order = await razorpay.orders.create({
             amount: totalAmount, // amount in paise
             currency: "INR",
@@ -247,10 +239,6 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
                 ),
             },
         });
-
-        if (totalAmount >= 20000) {
-            await createNewCoupon(req.user._id);
-        }
 
 	// updating product quantities
 	for (const product of products) {
