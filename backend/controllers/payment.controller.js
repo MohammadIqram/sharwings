@@ -229,7 +229,6 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
             receipt: `receipt_${Date.now()}`,
             notes: {
                 userId: req.user._id.toString(),
-                couponCode: couponCode || "",
                 products: JSON.stringify(
                     products.map((p) => ({
                         id: p._id,
