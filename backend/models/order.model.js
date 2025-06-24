@@ -42,6 +42,7 @@ const orderSchema = new mongoose.Schema(
 		returnRequest: {
 			reason: { type: String, default: '' },
 			description: { type: String, default: '' },
+			return: {type: Boolean, default: false},
 			status: {
 			type: String,
 			enum: ['None', 'Requested', 'Approved', 'Rejected', 'Completed'],

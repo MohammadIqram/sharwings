@@ -1,6 +1,8 @@
-import { BarChart, PlusCircle, ShoppingBasket } from "lucide-react";
+import { BarChart, PlusCircle, ShoppingBasket, BaggageClaim, ReceiptEuroIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import WarrantyClaimsAdminDashboard from "../components/WarrantyClaimsAdminDashboard";
+import OrderReturnAdminDashboard from "../components/OrderReturnAdminDashboard";
 
 import AnalyticsTab from "../components/AnalyticsTab";
 import CreateProductForm from "../components/CreateProductForm";
@@ -11,6 +13,8 @@ const tabs = [
 	{ id: "create", label: "Create Product", icon: PlusCircle },
 	{ id: "products", label: "Products", icon: ShoppingBasket },
 	{ id: "analytics", label: "Analytics", icon: BarChart },
+	{ id: "warranty claims", label: "Warranty Claims", icon: BaggageClaim },
+	{ id: "orders return", label: "Return", icon: ReceiptEuroIcon }
 ];
 
 const AdminPage = () => {
@@ -52,6 +56,8 @@ const AdminPage = () => {
 				{activeTab === "create" && <CreateProductForm />}
 				{activeTab === "products" && <ProductsList />}
 				{activeTab === "analytics" && <AnalyticsTab />}
+				{activeTab === "warranty claims" && <WarrantyClaimsAdminDashboard />}
+				{activeTab === "orders return" && <OrderReturnAdminDashboard />}
 			</div>
 		</div>
 	);

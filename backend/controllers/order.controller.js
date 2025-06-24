@@ -47,3 +47,58 @@ export const requestOrderReturn = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 }
+
+export const orderReturnAction = async (req, res) => {
+    const { pid, action } = req.body;
+
+    if (!pid || !action) {
+        return res.status(400).json({
+            success: false,
+            msg: "please provide a valid product id and action to be taken!"
+        });
+    }
+
+    try {
+        const result = await Product.updateOne(
+            { _id: pid },
+            { status: action }
+        );
+    
+        if (result.modifiedCount === 1) {
+            return res.status(200).json({
+                success: true,
+                msg: "order status updated Successfully"
+            });
+        }
+    
+        return res.status(500).json({
+            success: false,
+            msg: 'some unexpected error occured!'
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            msg: "some unexpected error occured!"
+        });
+    }
+}
+
+export const getOrderReturnHistory = async (req, res) => {
+
+    try {
+        const orders = await Order.find({ "returnRequest.return": true })
+            .populate("user", "name email")
+            .populate("products.product", "name image")
+            .lean();
+        console.log(orders);
+        res.json({
+            success: true,
+            orders
+        });
+    } catch (error) {
+        console.error("Error in getOrderReturnHistory controller", error.message);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+}

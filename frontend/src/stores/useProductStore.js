@@ -99,7 +99,7 @@ export const useProductStore = create((set) => ({
 			toast.success("Product updated successfully");
 		} catch (error) {
 			set({ loading: false });
-			toast.error(error.response.data.error || "Failed to update product");
+			toast.error(error.response?.data?.error || "Failed to update product");
 		}
-	}
+	},
 }));

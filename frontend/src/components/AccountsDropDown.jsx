@@ -38,19 +38,26 @@ export default function AccountsDropDown () {
               <User size={28} className="text-emerald-600" />
               <span className="text-gray-800 font-medium text-sm">{user?.email}</span>
             </div>
-            <Link
+            {/* <Link
               to="/profile"
               className="block px-4 py-2 text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition"
               onClick={() => setOpen(false)}
             >
               Profile
-            </Link>
+            </Link> */}
             <Link
               to="/orders"
               className="block px-4 py-2 text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition"
               onClick={() => setOpen(false)}
             >
               Orders
+            </Link>
+            <Link
+              to="/warrantyclaim"
+              className="block px-4 py-2 text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition"
+              onClick={() => setOpen(false)}
+            >
+              Claim warranty
             </Link>
             <button
               className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 transition"

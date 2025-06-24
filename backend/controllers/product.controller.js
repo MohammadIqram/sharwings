@@ -202,6 +202,7 @@ export const claimWarranty = async (req, res) => {
 		const imageUrl = cloudinaryResponse.secure_url;
 		console.log(imageUrl);
 		await ClaimWarranty.create({
+			user: req.user._id,
 			productName,
 			reason,
 			imageUrl
@@ -283,5 +284,21 @@ export const updateProductQuantity = async (req, res) => {
 		})
 	} catch (error) {
 		res.status(500).json({ success: false, message: "Server error", error: error.message });
+	}
+}
+
+
+export const warrantyClaimsDashboard = async (req, res) =>  {
+
+	try {
+		const claims = await ClaimWarranty.find({}).populate("user", "name email").lean();
+		if (!claims) {
+			return res.status(404).json({ message: "No warranty claims found" });
+		}
+		console.log(claims);
+		res.json(claims);
+	} catch (error) {
+		console.log("Error in WarrantyClaimsDashboard controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
 	}
 }
