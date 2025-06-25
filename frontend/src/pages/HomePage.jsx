@@ -6,11 +6,9 @@ import HomePageBanner from "../components/HomePageBanner";
 
 const categories = [
 	{ href: "/fans", name: "Fans", imageUrl: "/fans.webp" },
-	{ href: "/sockets-and-extension", name: "Sockets and Extensions", imageUrl: "/socketsAndExtensions.webp" },
-	{ href: "/bulbs", name: "Bulbs", imageUrl: "/bulb.webp" },
+	{ href: "/switches-and-sockets", name: "Switches and sockets", imageUrl: "/socketsAndExtensions.webp" },
+	{ href: "/ledlights", name: "Led Lights", imageUrl: "/bulb.webp" },
 	{ href: "/wires", name: "Wires", imageUrl: "/wires.webp" },
-	{ href: "/water-heaters", name: "Water Heaters", imageUrl: "/geazer.webp" },
-	{ href: "/switches", name: "Switches", imageUrl: "/switches.webp" },
 ];
 
 const HomePage = () => {
