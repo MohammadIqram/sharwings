@@ -35,17 +35,17 @@ const ProductsList = () => {
 
 	return (
 		<motion.div
-			className='bg-gray-800 shadow-lg rounded-lg overflow-visible max-w-7xl mx-auto'
+			className='bg-gray-800 shadow-lg rounded-lg overflow-x-scroll max-w-7xl mx-auto'
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.8 }}
 		>
-			<table className=' min-w-full divide-y divide-gray-700'>
+			<table className='divide-y divide-gray-700'>
 				<thead className='bg-gray-700'>
 					<tr>
 						<th
 							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
+							className='px-6 py-3 w-2/3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'
 						>
 							Product
 						</th>

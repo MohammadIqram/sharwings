@@ -14,21 +14,6 @@ const OrderSummary = () => {
 	const formattedSavings = savings.toFixed(2);
 	const { user } = useUserStore();
 
-	// const handlePayment = async () => {
-	// 	const stripe = await stripePromise;
-	// 	const res = await axios.post("/payments/create-checkout-session", {
-	// 		products: cart,
-	// 		couponCode: coupon ? coupon.code : null,
-	// 	});
-
-	// 	const session = res.data;
-	// 	window.location.href = session.paymentURL;
-
-	// 	if (result.error) {
-	// 		console.error("Error:", result.error);
-	// 	}
-	// };
-
 	const handlePayment2 = async () => {
 		try {
 			const res = await axios.post("/payments/create-checkout-session-razorpay", {

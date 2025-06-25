@@ -5,7 +5,6 @@ import { useCartStore } from "../stores/useCartStore";
 import { useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Logo from "../../public/logo.jpeg";
 import AccountsDropDown from "./AccountsDropDown";
 import axiosInstance from "../lib/axios";
 
@@ -56,16 +55,36 @@ const Navbar = () => {
             to="/"
             className="text-2xl font-bold text-emerald-400 items-center space-x-2 flex"
           >
-            <img src={Logo} alt="logo" className="w-36 h-16 object-fit" />
+            Sharwings
           </Link>
           {/* Hamburger for mobile */}
-          <button
-            className="sm:hidden text-emerald-400 focus:outline-none"
-            onClick={handleToggle}
-            aria-label="Toggle navigation"
-          >
-            {mobileOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+
+          <div className="flex items-center gap-4">
+            <button
+              className="sm:hidden text-emerald-400 focus:outline-none"
+              onClick={handleToggle}
+              aria-label="Toggle navigation"
+            >
+              {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+              {user && (
+                <Link
+                  to={"/cart"}
+                  onClick={handleClose}
+                  className="relative group text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out"
+                >
+                  <ShoppingCart
+                    className="inline-block mr-1 group-hover:text-emerald-400"
+                    size={20}
+                  />
+                  {cart?.length > 0 && (
+                    <span className="absolute -top-2 -left-2 bg-emerald-500 text-white rounded-full px-2 py-0.5 text-xs group-hover:bg-emerald-400 transition duration-300 ease-in-out">
+                      {cart?.length}
+                    </span>
+                  )}
+                </Link>
+              )}
+          </div>
                     {/* Search Bar */}
           <div className="relative flex-1 mx-4 max-w-lg hidden lg:block">
             <div className="flex items-center bg-gray-800 rounded-lg px-3 py-2 shadow focus-within:ring-2 ring-emerald-400">
@@ -223,24 +242,6 @@ const Navbar = () => {
             >
               Claim warranty
             </Link>
-            {user && (
-              <Link
-                to={"/cart"}
-                onClick={handleClose}
-                className="relative group text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out"
-              >
-                <ShoppingCart
-                  className="inline-block mr-1 group-hover:text-emerald-400"
-                  size={20}
-                />
-                Cart
-                {cart?.length > 0 && (
-                  <span className="absolute -top-2 -left-2 bg-emerald-500 text-white rounded-full px-2 py-0.5 text-xs group-hover:bg-emerald-400 transition duration-300 ease-in-out">
-                    {cart?.length}
-                  </span>
-                )}
-              </Link>
-            )}
             {isAdmin && (
               <Link
                 className="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center"
@@ -267,7 +268,7 @@ const Navbar = () => {
                 <Link
                   to={"/signup"}
                   onClick={handleClose}
-                  className="bg-emerald-600 w-1/3 hover:bg-emerald-700 text-white py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out"
+                  className="bg-emerald-600 w-fit hover:bg-emerald-700 text-white py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out"
                 >
                   <UserPlus className="mr-2" size={18} />
                   Sign Up
