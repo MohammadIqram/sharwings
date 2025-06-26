@@ -25,7 +25,7 @@ const Footer = () => (
                     <Link to="/return-policy" className="hover:text-emerald-400 text-[1.08rem]">Return Policy</Link>
                 </div>
                 {/* Column 3 */}
-                <div className="flex flex-col gap-1 min-w-[120px]">
+                <div className="hidden lg:flex flex-col gap-1 min-w-[120px]">
                     <span className="font-semibold text-emerald-400 mb-1 text-lg">Quick Links</span>
                     <Link to="/" className="hover:text-emerald-400 text-[1.08rem]">Home</Link>
                     <Link to="/cart" className="hover:text-emerald-400 text-[1.08rem]">Cart</Link>

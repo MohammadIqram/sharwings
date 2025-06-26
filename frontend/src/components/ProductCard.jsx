@@ -46,11 +46,6 @@ const ProductCard = ({ product }) => {
                                 ₹{product.price}
                             </span>
                         )}
-                        {product.cutoffPrice && (
-                            <span className="text-gray-500 line-through text-base ml-1">
-                                ₹{product.cutoffPrice}
-                            </span>
-                        )}
                     </div>
                     {product.salePrice && product.price && (
 						<span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-yellow-400/90 text-emerald-900 font-bold text-xs shadow animate-pulse mt-1 w-fit">
