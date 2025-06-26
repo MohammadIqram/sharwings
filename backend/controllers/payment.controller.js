@@ -212,7 +212,7 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
         let totalAmount = 0;
 
         const items = products.map((product) => {
-            const amount = Math.round(product.price * 100); // Razorpay expects amount in paise
+            const amount = Math.round(product.salePrice * 100); // Razorpay expects amount in paise
             totalAmount += amount * product.quantity;
 
             return {
@@ -233,7 +233,7 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
                     products.map((p) => ({
                         id: p._id,
                         quantity: p.quantity,
-                        price: p.price,
+                        price: p.salePrice,
                     }))
                 ),
             },
