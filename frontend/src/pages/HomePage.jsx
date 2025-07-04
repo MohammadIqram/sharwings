@@ -5,10 +5,10 @@ import FeaturedProducts from "../components/FeaturedProducts";
 import HomePageBanner from "../components/HomePageBanner";
 
 const categories = [
-	{ href: "/fans", name: "Fans", imageUrl: "/fans.webp" },
-	{ href: "/switches-and-sockets", name: "Switches and sockets", imageUrl: "/socketsAndExtensions.webp" },
-	{ href: "/ledlights", name: "Led Lights", imageUrl: "/bulb.webp" },
-	{ href: "/wires", name: "Wires", imageUrl: "/wires.webp" },
+	{ href: "/fans", name: "Fans", imageUrl: "/fans.jpeg" },
+	{ href: "/switches-and-sockets", name: "Switches and sockets", imageUrl: "/switches.jpeg" },
+	{ href: "/ledlights", name: "Led Lights", imageUrl: "/bulbs.jpeg" },
+	{ href: "/wires", name: "Wires", imageUrl: "/wires.jpeg" },
 ];
 
 const HomePage = () => {
