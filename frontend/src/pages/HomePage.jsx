@@ -6,7 +6,7 @@ import HomePageBanner from "../components/HomePageBanner";
 import LogoBg from "../../public/logo_shadow.jpeg";
 
 const categories = [
-	{ href: "/fans", name: "Fans", imageUrl: "/fans.jpeg" },
+	{ href: "/fans", name: "Fans", imageUrl: "/ffans.jpeg" },
 	{ href: "/switches-and-sockets", name: "Switches and sockets", imageUrl: "/switches.jpeg" },
 	{ href: "/ledlights", name: "Led Lights", imageUrl: "/bulbs.jpeg" },
 	{ href: "/wires", name: "Wires", imageUrl: "/wires.jpeg" },
