@@ -29,7 +29,7 @@ const Footer = () => (
                     <span className="font-semibold text-emerald-400 mb-1 text-lg">Quick Links</span>
                     <Link to="/" className="hover:text-emerald-400 text-[1.08rem]">Home</Link>
                     <Link to="/cart" className="hover:text-emerald-400 text-[1.08rem]">Cart</Link>
-                    <Link to="/category/electronics" className="hover:text-emerald-400 text-[1.08rem]">Electronics</Link>
+                    <Link to="/category/fans" className="hover:text-emerald-400 text-[1.08rem]">Fans</Link>
                 </div>
             </div>
         </div>
