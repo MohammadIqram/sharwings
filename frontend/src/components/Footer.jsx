@@ -5,7 +5,7 @@ const Footer = () => (
     <footer className="w-full bg-gray-900 border-t border-emerald-800 py-4 mt-8">
         <div className="h-[400px] container mx-auto flex flex-col sm:flex-row justify-around items-center px-4">
             {/* Left: Logo */}
-            <Link to="/" className="text-2xl font-bold text-emerald-400 mb-4 sm:mb-0">
+            <Link to="/" className="hidden lg:block text-2xl font-bold text-emerald-400 mb-4 sm:mb-0">
                 <img src={Logo} alt="logo" className="w-56 h-32" />
             </Link>
             {/* Right: 3 Columns of Links */}
