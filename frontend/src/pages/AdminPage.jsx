@@ -8,13 +8,15 @@ import AnalyticsTab from "../components/AnalyticsTab";
 import CreateProductForm from "../components/CreateProductForm";
 import ProductsList from "../components/ProductsList";
 import { useProductStore } from "../stores/useProductStore";
+import OrdersTable from "./OrdersTable";
 
 const tabs = [
 	{ id: "create", label: "Create Product", icon: PlusCircle },
 	{ id: "products", label: "Products", icon: ShoppingBasket },
 	{ id: "analytics", label: "Analytics", icon: BarChart },
 	{ id: "warranty claims", label: "Warranty Claims", icon: BaggageClaim },
-	{ id: "orders return", label: "Return", icon: ReceiptEuroIcon }
+	{ id: "orders return", label: "Return", icon: ReceiptEuroIcon },
+	{ id: "orders", label: "Orders", icon: ShoppingBasket }
 ];
 
 const AdminPage = () => {
@@ -58,6 +60,7 @@ const AdminPage = () => {
 				{activeTab === "analytics" && <AnalyticsTab />}
 				{activeTab === "warranty claims" && <WarrantyClaimsAdminDashboard />}
 				{activeTab === "orders return" && <OrderReturnAdminDashboard />}
+				{activeTab === "orders" && <OrdersTable />}
 			</div>
 		</div>
 	);

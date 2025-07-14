@@ -102,3 +102,28 @@ export const getOrderReturnHistory = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 }
+
+export const showAllOrders = async (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page);
+    const skip = (page - 1) * limit;
+    console.log(skip);
+    console.log(page);
+    let docs = 1;
+    try {
+        const orders = await Order.find({}).skip(skip).limit(limit)
+        .populate("user", "name email")
+        .populate("products.product", "name image")
+        .lean();
+        if (page === 1) {
+            docs = await Order.estimatedDocumentCount();
+        }
+        const totalPages = Math.ceil(docs / limit);
+        return res.status(200).json({
+            orders: orders,
+            totalPages: totalPages
+        });
+    } catch {
+        return res.status(500).json({});
+    }
+}

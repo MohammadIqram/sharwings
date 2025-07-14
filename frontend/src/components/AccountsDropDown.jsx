@@ -6,13 +6,16 @@ import { useUserStore } from "../stores/useUserStore";
 export default function AccountsDropDown () {
   const [open, setOpen] = useState(false);
   const { user, logout } = useUserStore();
+  const [loading, setLoading] = useState(false);
 
   // Close dropdown when overlay is clicked
   const handleOverlayClick = () => setOpen(false);
 
-  const signOut = () => {
-    logout();
-    setOpen(false); 
+  const signOut = async () => {
+    setLoading(true);
+    await logout();
+    setLoading(false);
+    setOpen(false);
   }
 
   return (
@@ -60,9 +63,12 @@ export default function AccountsDropDown () {
               Claim warranty
             </Link>
             <button
-              className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 transition"
+              className="block w-full flex items-center gap-2 text-left px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-700 transition"
               onClick={signOut}
             >
+              {loading && (
+                <span className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin inline-block" />
+              )}
               Logout
             </button>
           </div>

@@ -4,6 +4,7 @@ import { stripe } from "../lib/stripe.js";
 import razorpay from "../lib/razorpay.js";
 import crypto from "crypto";
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
 
 export const createCheckoutSession = async (req, res) => {
 	try {
@@ -247,6 +248,10 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
 		);
 	}	    
 
+	await User.updateOne(
+			{ _id: req.user._id },
+			{ $set: { cartItems: [] } }
+		);
         res.status(200).json({ id: order.id, totalAmount: totalAmount / 100 });
     } catch (error) {
         console.error("Error processing checkout:", error);
