@@ -52,7 +52,7 @@ export const useCartStore = create((set, get) => ({
 	},
 	addToCart: async (product) => {
 		try {
-			await axios.post("/cart", { productId: product._id });
+			await axios.post("/cart", { productId: product._id, quantity: product.quantity });
 			toast.success("Product added to cart");
 
 			set((prevState) => {
@@ -66,6 +66,7 @@ export const useCartStore = create((set, get) => ({
 			});
 			get().calculateTotals();
 		} catch (error) {
+			console.error("Error adding to cart:", error.response);
 			toast.error(error.response?.data?.message || "An error occurred");
 		}
 	},
