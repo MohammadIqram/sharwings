@@ -191,8 +191,8 @@ export const editProductDetails = async (req, res) => {
 
 export const claimWarranty = async (req, res) => {
 	try {
-		const { productName, reason, photo, address } = req.body;
-		if (!productName || !reason || !photo || !address) {
+		const { productName, reason, photo, address, phone } = req.body;
+		if (!productName || !reason || !photo || !address || !phone) {
 			return res.status(400).json({ message: "All fields are required" });
 		}
 
@@ -204,6 +204,7 @@ export const claimWarranty = async (req, res) => {
 			productName,
 			reason,
 			address,
+			phone,
 			imageUrl
 		});
 
@@ -213,6 +214,7 @@ export const claimWarranty = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };

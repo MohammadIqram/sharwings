@@ -20,6 +20,10 @@ const claimWarrantySchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        phone: {
+            type: String,
+            required: true,
+        },
         imageUrl: {
             type: String,
             required: true

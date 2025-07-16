@@ -14,6 +14,7 @@ export default function ClaimWarrantyForm() {
     productName: "",
     address: "",
     reason: "",
+    phone: "",
     photo: "",
   });
 
@@ -46,11 +47,11 @@ export default function ClaimWarrantyForm() {
         setLoading(true);
         const res = await axiosInstance.post("products/warranty/claim", form);
         if (res.data.success) {
-            toast.success("Warranty claim submitted successfully!");
-            setForm({ productName: "", reason: "", address: "", photo: "" });
+            setForm({ productName: "", reason: "", address: "", photo: "", phone: "" });
             setPhoto(null);
             setPhotoPreview(null);
             setError(null);
+            toast.success("Warranty claim submitted successfully!");
         }
         else {
             setError(res.data.message || "Failed to submit warranty claim. Please try again.");
@@ -132,6 +133,19 @@ export default function ClaimWarrantyForm() {
                 value={form.productName}
                 onChange={handleChange}
                 placeholder="Enter product name"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Contact number
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-emerald-500 text-black"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="Enter your contact number"
               />
             </div>
             <div>
