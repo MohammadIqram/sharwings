@@ -5,6 +5,7 @@ export const getCustomerOrderHistory = async (req, res) => {
         const orders = await Order.find({ user: req.user.id })
         .populate("products.product", "name image")
         .lean();
+        console.log(orders.map(order => console.log(order.products)));
         const sortedOrders = orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         if (!orders || orders.length === 0) {
@@ -38,6 +39,7 @@ export const requestOrderReturn = async (req, res) => {
         order.returnRequest.description = form.description || '';
         order.returnRequest.requestedAt = new Date();
         order.returnRequest.status = 'Requested';
+        order.returnRequest.return = true;
         
         await order.save();
 
@@ -125,5 +127,32 @@ export const showAllOrders = async (req, res) => {
         });
     } catch {
         return res.status(500).json({});
+    }
+}
+
+export const orderReturnStatusChange = async (req, res) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!orderId || !status) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide a valid order ID and status"
+        });
+    }
+
+    try {
+        const order = await Order.findById(orderId).select("returnRequest");
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Order not found" });
+        }
+
+        order.returnRequest.status = status;
+        await order.save();
+
+        res.json({ success: true, msg: "Return request status updated successfully" });
+    } catch (error) {
+        console.error("Error in orderReturnStatusChange controller", error.message);
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 }

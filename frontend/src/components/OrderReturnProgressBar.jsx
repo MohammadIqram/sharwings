@@ -69,7 +69,7 @@ export default function OrderReturnProgressBar({ request }) {
           </div>
           <span
             className={`ml-2 mr-4 text-sm font-semibold ${
-              request.status === 'Completed' ? "text-emerald-700" : "text-gray-400"
+              request.status === 'Completed' || request.status === 'Approved' ? "text-emerald-700" : "text-gray-400"
             }`}
           >
             Completed

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Trash, EllipsisVertical } from "lucide-react";
+import { Trash, EllipsisVertical, Loader } from "lucide-react";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
@@ -7,6 +7,7 @@ import axios from "../lib/axios";
 const OrderReturnAdminDashboard = () => {
   const [ordersReturn, setOrdersReturn] = useState([]);
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getReturnedProducts = async () => {
@@ -20,6 +21,26 @@ const OrderReturnAdminDashboard = () => {
 
     getReturnedProducts();
   }, []);
+
+  const handleOrderStatusChange = async (e) => {
+    try {
+      setLoading(true);
+      const response = await axios.put(`/orders/return/${e.target?.dataset?.orderid}`, {
+        status: e.target?.dataset?.id,
+      });
+      toast.success(response.data.msg);
+      setOrdersReturn((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === e.target?.dataset?.orderid ? { ...order, returnRequest: { ...order.returnRequest, status: e.target?.dataset?.id } } : order
+        )
+      );
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to approve return request");
+    } finally {
+      setLoading(false);
+      setOpenMenuId(null);
+    }
+  }
 
   return (
     <motion.div
@@ -140,8 +161,11 @@ const OrderReturnAdminDashboard = () => {
                       className="absolute right-0 -top-[1px] mt-2 w-40 bg-gray-900 border border-gray-700 rounded shadow-lg z-50"
                       style={{ zIndex: 9999 }}
                     >
-                      <ul>
-                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white">
+                      <ul className="relative">
+                        {
+                          loading && <Loader className="absolute top-50 left-20 h-5 w-5 animate-spin mx-auto my-2" />
+                        }
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="Approved" onClick={handleOrderStatusChange}>
                           approve
                         </li>
                       </ul>
