@@ -3,13 +3,16 @@ import { Image as ImageIcon } from "lucide-react";
 import { TriangleAlert } from "lucide-react";
 import axiosInstance from "../lib/axios";
 import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
 
 export default function ClaimWarrantyForm() {
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     productName: "",
+    address: "",
     reason: "",
     photo: "",
   });
@@ -40,16 +43,22 @@ export default function ClaimWarrantyForm() {
     }
 
     try {
+        setLoading(true);
         const res = await axiosInstance.post("products/warranty/claim", form);
         if (res.data.success) {
             toast.success("Warranty claim submitted successfully!");
-            setForm({ productName: "", reason: "" });
+            setForm({ productName: "", reason: "", address: "", photo: "" });
+            setPhoto(null);
+            setPhotoPreview(null);
+            setError(null);
         }
         else {
             setError(res.data.message || "Failed to submit warranty claim. Please try again.");
         }
     } catch {
         setError("Failed to submit warranty claim. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,6 +164,19 @@ export default function ClaimWarrantyForm() {
             </div>
             <div>
               <label className="block text-gray-700 font-medium mb-1">
+                Address
+              </label>
+              <textarea
+                className="w-full border text-black border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-emerald-500"
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                placeholder="enter your complete address"
+                rows={4}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
                 Reason for Claim
               </label>
               <textarea
@@ -168,9 +190,18 @@ export default function ClaimWarrantyForm() {
             </div>
             <button
               type="submit"
-              className="w-full bg-emerald-600 text-white font-semibold py-2 rounded hover:bg-emerald-700 transition"
+              className="flex justify-center items-center w-full bg-emerald-600 text-white font-semibold py-2 rounded hover:bg-emerald-700 transition"
             >
-              Submit Claim
+              {
+                loading ? (
+                  <>
+                    <Loader className='mr-2 h-5 w-5 animate-spin' aria-hidden='true' />
+                    Loading...
+                  </>
+                ) : (
+                  "Submit Claim"
+                )
+              }
             </button>
           </form>
         </div>

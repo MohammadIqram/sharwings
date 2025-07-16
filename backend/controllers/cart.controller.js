@@ -3,13 +3,13 @@ import Product from "../models/product.model.js";
 export const getCartProducts = async (req, res) => {
 	try {
 		const products = await Product.find({ _id: { $in: req.user.cartItems } });
-
+		console.log(products);
 		// add quantity for each product
 		const cartItems = products.map((product) => {
 			const item = req.user.cartItems.find((cartItem) => cartItem.id === product.id);
 			return { ...product.toJSON(), quantity: item.quantity };
 		});
-
+		console.log("cartItems:", cartItems);
 		res.json(cartItems);
 	} catch (error) {
 		console.log("Error in getCartProducts controller", error.message);
@@ -19,14 +19,24 @@ export const getCartProducts = async (req, res) => {
 
 export const addToCart = async (req, res) => {
 	try {
-		const { productId } = req.body;
+		const { productId, quantity } = req.body;
 		const user = req.user;
 
 		const existingItem = user.cartItems.find((item) => item.id === productId);
+		const product = await Product.findById(productId).select('_id quantity').lean();
+		if (!product) {
+			return res.status(500).json({ message: "product not available. Try reloading the page.", error: error.message });
+		}
 		if (existingItem) {
+			if (quantity > existingItem.quantity) {
+				return res.status(500).json({ message: `there are only ${product.quantity} units in stock.`, error: `there are only ${product.quantity} units in stock.` });
+			}
 			existingItem.quantity += 1;
 		} else {
-			user.cartItems.push(productId);
+			if (quantity > product.quantity) {
+				return res.status(500).json({ message: `there are only ${product.quantity} units in stock.`, error: `there are only ${product.quantity} units in stock.` });
+			}
+			user.cartItems.push({_id: productId, quantity: quantity || 1});
 		}
 
 		await user.save();

@@ -191,21 +191,19 @@ export const editProductDetails = async (req, res) => {
 
 export const claimWarranty = async (req, res) => {
 	try {
-		const { productName, reason, photo } = req.body;
-
-		if (!productName || !reason || !photo) {
+		const { productName, reason, photo, address } = req.body;
+		if (!productName || !reason || !photo || !address) {
 			return res.status(400).json({ message: "All fields are required" });
 		}
 
 		// Upload photo to Cloudinary
 		const cloudinaryResponse = await cloudinary.uploader.upload(photo, { folder: "warranty_claims" });
-		console.log("cloudinaryResponse", cloudinaryResponse);
 		const imageUrl = cloudinaryResponse.secure_url;
-		console.log(imageUrl);
 		await ClaimWarranty.create({
 			user: req.user._id,
 			productName,
 			reason,
+			address,
 			imageUrl
 		});
 
@@ -214,7 +212,7 @@ export const claimWarranty = async (req, res) => {
 		res.status(201).json({
 			success: true,
 		});
-	} catch {
+	} catch (error) {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };

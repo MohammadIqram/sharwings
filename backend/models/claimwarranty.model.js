@@ -12,6 +12,14 @@ const claimWarrantySchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        reason: {
+            type: String,
+            required: true,
+        },
+        address: {
+            type: String,
+            required: true,
+        },
         imageUrl: {
             type: String,
             required: true
