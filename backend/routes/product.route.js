@@ -12,7 +12,8 @@ import {
 	searchProduct,
 	getPdpPage,
 	updateProductQuantity,
-	warrantyClaimsDashboard
+	warrantyClaimsDashboard,
+	updateWarrantyClaimStatus
 } from "../controllers/product.controller.js";
 import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
 
@@ -31,5 +32,6 @@ router.get("/search", searchProduct);
 router.get("/:name", getPdpPage);
 router.post("/quantity", protectRoute, updateProductQuantity);
 router.get("/warranty/claim/dashboard", protectRoute, adminRoute, warrantyClaimsDashboard);
+router.put("/warranty/claim/:claimId", protectRoute, adminRoute, updateWarrantyClaimStatus);
 
 export default router;

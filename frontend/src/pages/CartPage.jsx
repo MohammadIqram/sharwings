@@ -6,9 +6,36 @@ import CartItem from "../components/CartItem";
 import PeopleAlsoBought from "../components/PeopleAlsoBought";
 import OrderSummary from "../components/OrderSummary";
 import CartPageSkeleton from "../components/CartPageSkeleton";
+import { Pencil } from "lucide-react";
+import { useState } from "react";
+import AddAddressModal from "../components/AddAddressModal";
+import { useUserStore } from "../stores/useUserStore";
 
 const CartPage = () => {
   const { cart, loading } = useCartStore();
+  const { user, addBillingAddress } = useUserStore();
+  const [showModal, setShowModal] = useState(false);
+  const [loader,setLoader] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+  });
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setLoader(true);
+    await addBillingAddress(form);
+    setShowModal(false);
+    setLoader(false);
+  };
 
   return (
     <div className="py-8 md:py-16">
@@ -34,9 +61,43 @@ const CartPage = () => {
                 <EmptyCartUI />
               ) : (
                 <div className="space-y-6">
-                  {cart?.map((item) => (
-                    <CartItem key={item._id} item={item} />
-                  ))}
+                  <>
+                    {/* Address Container */}
+                    <div className="mb-6 flex items-center justify-between w-full mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-4 border border-emerald-200">
+                      <div>
+                        {user?.address ? (
+                          <div>
+                            <div className="text-lg font-semibold text-emerald-700">
+                              Delivery Address
+                            </div>
+                            <div className="text-gray-800 dark:text-gray-200 mt-1">
+                              {user?.address?.name}, {user?.address?.street}, {user?.address.city},{" "}
+                              {user?.address?.state} - {user?.address?.zip}
+                              <br />
+                              {user?.address?.phone}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-red-600 font-semibold">
+                            Please add address
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        className={`ml-4 p-2 rounded-full transition ${
+                          user?.address
+                            ? "bg-emerald-100 hover:bg-emerald-200 text-emerald-700"
+                            : "bg-red-100 hover:bg-red-200 text-red-600"
+                        }`}
+                        onClick={()=>setShowModal(true)}
+                      >
+                        <Pencil size={20} />
+                      </button>
+                    </div>
+                    {cart?.map((item) => (
+                      <CartItem key={item._id} item={item} />
+                    ))}
+                  </>
                 </div>
               )}
               {cart?.length > 0 && <PeopleAlsoBought />}
@@ -56,6 +117,7 @@ const CartPage = () => {
           </div>
         )}
       </div>
+        <AddAddressModal showModal={showModal} setShowModal={setShowModal} form={form} handleChange={handleChange} handleSave={handleSave} loading={loader} />
     </div>
   );
 };

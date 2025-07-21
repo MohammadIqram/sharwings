@@ -21,6 +21,25 @@ export default function WarrantyClaimsAdminDashboard() {
     getWarrantyTicktes();
   }, []);
 
+  const handleProductWarrentyStatus = async (e) => {
+    const claimId = e.target.closest("tr").getAttribute("data-claim-id");
+    const status = e.target.value;
+
+    try {
+      await axios.put(`/products/warranty/claim/${claimId}`, { status });
+      setClaims((prevClaims) =>
+        prevClaims.map((claim) =>
+          claim._id === claimId ? { ...claim, status } : claim
+        )
+      );
+      toast.success("Claim status updated successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to update claim status");
+    } finally {
+      e.target.blur(); // Remove focus from the select element after change
+    }
+  }
+
   return (
     <motion.div
       className="bg-gray-800 shadow-lg rounded-lg overflow-x-scroll max-w-7xl mx-auto"
@@ -54,6 +73,12 @@ export default function WarrantyClaimsAdminDashboard() {
               className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
             >
               Raised At
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+            >
+              Status
             </th>
           </tr>
         </thead>
@@ -90,6 +115,15 @@ export default function WarrantyClaimsAdminDashboard() {
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-300">
                   {claim.createdAt?.split('T')[0]}
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-300">
+                  <select name="cars" id="cars" defaultValue={claim.status} onChange={handleProductWarrentyStatus} className="bg-gray-700 text-gray-300 border border-gray-600 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
                 </div>
               </td>
             </tr>

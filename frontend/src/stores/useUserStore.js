@@ -70,6 +70,23 @@ export const useUserStore = create((set, get) => ({
 			throw error;
 		}
 	},
+
+	addBillingAddress: async (form) => {
+		set({ loading: true });
+		try {
+			const res = await axios.post("/cart/billing-address", form);
+			set((state) => ({
+				user: { ...state.user, address: form },
+				loading: false,
+			}));
+			toast.success("address updated successfully!")
+			return;
+		} catch (error) {
+			set({ loading: false });
+			toast.error(error?.response?.data?.message || 'some unexpected error occured. Try again later!')
+			return;
+		}
+	},
 }));
 
 // TODO: Implement the axios interceptors for refreshing access token

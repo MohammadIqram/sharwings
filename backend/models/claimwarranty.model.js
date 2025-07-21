@@ -28,6 +28,11 @@ const claimWarrantySchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        status: {
+            type: String,
+            enum: ["pending", "approved", "rejected"],
+            default: "pending",
+        }
     },
     {
         timestamps: true,
