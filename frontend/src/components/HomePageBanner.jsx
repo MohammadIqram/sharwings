@@ -14,7 +14,6 @@ export default function HomePageBanner() {
             navigate("/login");
             return;
         }
-        navigate("/shop");
     }
 
   return (
