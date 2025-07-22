@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { MoveRight } from "lucide-react";
 import axios from "../lib/axios";
 import { useUserStore } from "../stores/useUserStore";
+import toast from "react-hot-toast";
 
 const OrderSummary = () => {
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
@@ -51,8 +52,8 @@ const OrderSummary = () => {
 				alert("Payment failed. Please try again.");
 			});
 		} catch (error) {
+			toast.error(error.response?.data?.error || "Error initiating payment");
 			console.error("Error initiating Razorpay payment:", error);
-			alert("Error initiating payment. Please try again.");
 		}
 	};
 

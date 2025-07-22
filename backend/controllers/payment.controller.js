@@ -166,6 +166,13 @@ export const razorpaySuccess = async (req, res) => {
         });
 
         await newOrder.save();
+		// updating product quantities
+		for (const product of products) {
+			await Product.findByIdAndUpdate(
+				product._id,
+				{ $inc: { quantity: -product.quantity } },
+			);
+		}
 
         res.status(200).json({
             success: true,
@@ -210,6 +217,10 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
             return res.status(400).json({ error: "Invalid or empty products array" });
         }
 
+		if (!req.user.address || !req.user?.address.name) {
+			return res.status(400).json({ error: "User address is required for checkout" });
+		}
+
         let totalAmount = 0;
 
         const items = products.map((product) => {
@@ -238,15 +249,7 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
                     }))
                 ),
             },
-        });
-
-	// updating product quantities
-	for (const product of products) {
-		await Product.findByIdAndUpdate(
-			product._id,
-			{ $inc: { quantity: -product.quantity } },
-		);
-	}	    
+        });   
 
 	await User.updateOne(
 			{ _id: req.user._id },
