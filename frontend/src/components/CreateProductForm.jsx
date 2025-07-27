@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 import toast from "react-hot-toast";
+import { AlertTriangle } from "lucide-react";
 
 const categories = ["fans","ledlights","switches-and-sockets","wires"];
 
@@ -33,6 +34,10 @@ const CreateProductForm = () => {
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
 		if (file) {
+			if (file.size > 150 * 1024) {
+				toast.error("Image size should be less than 150KB");
+				return;
+			}
 			const reader = new FileReader();
 			console.log(reader);
 			reader.onloadend = () => {
@@ -52,7 +57,13 @@ const CreateProductForm = () => {
 			transition={{ duration: 0.8 }}
 		>
 			<h2 className='text-2xl font-semibold mb-6 text-emerald-300'>Create New Product</h2>
-
+        	{/* Note about image size */}
+			<div className="mb-4 flex items-start gap-2 bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded">
+				<AlertTriangle className="text-yellow-500 mt-0.5" size={20} />
+				<span className="text-yellow-800 text-sm">
+					<strong>Note:</strong> Images smaller than 150KB load faster, resulting in a better customer experience and quicker page loads.
+				</span>
+			</div>
 			<form onSubmit={handleSubmit} className='space-y-4'>
 				<div>
 					<label htmlFor='name' className='block text-sm font-medium text-gray-300'>
