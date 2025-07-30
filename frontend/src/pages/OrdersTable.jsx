@@ -81,6 +81,18 @@ const OrdersTable = () => {
             >
               Return
             </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+            >
+              Payment Mode
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+            >
+              Address
+            </th>
           </tr>
         </thead>
 
@@ -124,6 +136,22 @@ const OrdersTable = () => {
                     <span className="font-bold uppercase">raised At</span>{" "}
                     {order.returnRequest?.requestedAt?.split("T")[0]}
                   </p>
+                </div>
+              </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-300">
+                  {order?.paymentMode || 'N/A'}
+                </div>
+              </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-300">
+                  {order?.address ?
+                          <>
+                  {order.address.name}, {order.address.street}, {order.address.city}, {order.address.state} - {order.address.zip}
+                  <br />
+                  {order.address.phone}
+                </> : <p>N/A</p>
+                  }
                 </div>
               </td>
             </tr>

@@ -6,7 +6,7 @@ import axios from "../lib/axios";
 import { useUserStore } from "../stores/useUserStore";
 import toast from "react-hot-toast";
 
-const OrderSummary = () => {
+const OrderSummary = ({ paymentMode }) => {
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
 	const savings = subtotal - total;
 	const formattedSubtotal = subtotal.toFixed(2);
@@ -16,10 +16,22 @@ const OrderSummary = () => {
 
 	const handlePayment2 = async () => {
 		try {
-			const res = await axios.post("/payments/create-checkout-session-razorpay", {
-				products: cart,
-				couponCode: coupon ? coupon.code : null,
-			});
+			let res = null;
+			if (paymentMode === "cod") {
+				res = await axios.post("/payments/cash-on-delivery", {
+					products: cart,
+					couponCode: coupon ? coupon.code : null,
+				});
+				alert("Order placed successfully with Cash on Delivery");
+				window.location.href = "/orders";
+				return;
+			}
+			else {
+				res = await axios.post("/payments/create-checkout-session-razorpay", {
+					products: cart,
+					couponCode: coupon ? coupon.code : null,
+				});
+			}
 	
 			const { id, totalAmount } = res.data;
 	

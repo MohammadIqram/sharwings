@@ -163,6 +163,8 @@ export const razorpaySuccess = async (req, res) => {
             totalAmount: razorpayOrder.amount / 100, // convert from paise to INR
             razorpayOrderId: orderId,
             razorpayPaymentId: paymentId,
+			mode: "online", // Cash on Delivery
+			address: req.user.address
         });
 
         await newOrder.save();
@@ -256,6 +258,57 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
 			{ $set: { cartItems: [] } }
 		);
         res.status(200).json({ id: order.id, totalAmount: totalAmount / 100 });
+    } catch (error) {
+        console.error("Error processing checkout:", error);
+        res.status(500).json({ message: "Error processing checkout", error: error.message });
+    }
+};
+
+
+export const placeOrderWithCashOnDelivery = async (req, res) => {
+    try {
+        const { products } = req.body;
+
+        if (!Array.isArray(products) || products.length === 0) {
+            return res.status(400).json({ error: "Invalid or empty products array" });
+        }
+
+		if (!req.user.address || !req.user?.address.name) {
+			return res.status(400).json({ error: "User address is required for checkout" });
+		}
+
+        let totalAmount = 0;
+        products.map((product) => {
+            const amount = Math.round(product.salePrice * 100); // Razorpay expects amount in paise
+            totalAmount += amount * product.quantity;
+
+            return {
+                name: product.name,
+                image: product.image,
+                quantity: product.quantity || 1,
+                price: amount,
+            };
+        });
+		const checkoutLineItems =  products.map((product) => ({
+                product: product._id,
+                quantity: product.quantity,
+                price: product.price,
+        }))
+        const newOrder = new Order({
+            user: req.user._id,
+			products: checkoutLineItems,
+            totalAmount: totalAmount, // convert from paise to INR
+			mode: "cod", // Cash on Delivery
+			address: req.user.address
+        });
+		console.log(newOrder);
+        await newOrder.save(); 
+
+	await User.updateOne(
+			{ _id: req.user._id },
+			{ $set: { cartItems: [] } }
+		);
+        res.status(200).json({ success: true, message: "Order placed successfully with Cash on Delivery" });
     } catch (error) {
         console.error("Error processing checkout:", error);
         res.status(500).json({ message: "Error processing checkout", error: error.message });

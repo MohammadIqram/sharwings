@@ -49,8 +49,15 @@ const orderSchema = new mongoose.Schema(
 			default: 'None'
 		},
 		requestedAt: { type: Date },
-		processedAt: { type: Date }
+		processedAt: { type: Date },
   	},
+	address: {},
+		mode: {
+			type: String,
+			enum: ['cod', 'online'],
+			default: 'cod',
+			required: true
+		}
 	},
 	{ timestamps: true }
 );

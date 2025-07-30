@@ -16,6 +16,7 @@ const CartPage = () => {
   const { user, addBillingAddress } = useUserStore();
   const [showModal, setShowModal] = useState(false);
   const [loader,setLoader] = useState(false);
+  const [paymentMode, setPaymentMode] = useState("cod");
   const [form, setForm] = useState({
     name: "",
     street: "",
@@ -94,6 +95,25 @@ const CartPage = () => {
                         <Pencil size={20} />
                       </button>
                     </div>
+                                {/* Payment Mode */}
+                    <div className="mb-6 w-full mx-auto bg-white dark:bg-gray-900 rounded-lg shadow p-4 border border-emerald-200 flex flex-col gap-2">
+                      <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="cod"
+                        name="paymentMode"
+                        checked={paymentMode === "cod"}
+                        onChange={() => setPaymentMode(paymentMode === "cod" ? "" : "cod")}
+                        className="accent-emerald-600 w-5 h-5"
+                      />
+                        <label htmlFor="cod" className="text-emerald-700 font-semibold text-base cursor-pointer">
+                          Cash on Delivery (COD)
+                        </label>
+                      </div>
+                      <div className="ml-8 text-gray-500 text-sm">
+                        <span className="font-medium text-emerald-600">Info:</span> Pay with cash when your order is delivered to your doorstep. No advance payment required.
+                      </div>
+                    </div>
                     {cart?.map((item) => (
                       <CartItem key={item._id} item={item} />
                     ))}
@@ -110,7 +130,7 @@ const CartPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                <OrderSummary />
+                <OrderSummary paymentMode={paymentMode} />
                 {/* <GiftCouponCard /> */}
               </motion.div>
             )}
