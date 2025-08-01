@@ -102,4 +102,17 @@ export const useProductStore = create((set) => ({
 			toast.error(error.response?.data?.error || "Failed to update product");
 		}
 	},
+
+	fetchClearanceSaleProducts: async () => {
+		set({ loading: true });
+		try {
+			const response = await axios.get("/products/clearance-sale");
+			set({ products: response?.data?.products, loading: false });
+		} catch (error) {
+			set({ error: "Failed to fetch clearance sale products", loading: false });
+			toast.error(error?.response?.data?.error || "Failed to fetch clearance sale products");
+		} finally {
+			set({ loading: false });
+		}
+	} 
 }));

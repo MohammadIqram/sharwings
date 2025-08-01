@@ -42,8 +42,7 @@ export const getFeaturedProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 	try {
-		const { name, description, price, salePrice, image, category, quantity } = req.body;
-
+		const { name, description, price, salePrice, image, category, quantity, closeOut } = req.body;
 		let cloudinaryResponse = null;
 
 		if (image) {
@@ -57,7 +56,8 @@ export const createProduct = async (req, res) => {
 			salePrice,
 			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
 			category,
-			quantity
+			quantity,
+			closeOut
 		});
 
 		res.status(201).json(product);
@@ -243,7 +243,6 @@ export const searchProduct = async (req, res) => {
 export const getPdpPage = async (req, res) => {
 	try {
 		const { name } = req.params;
-		console.log("name", name);
 		const product = await Product.findOne({ name }).lean();
 		if (!product) {
 			return res.status(404).json({ message: "Product not found" });
@@ -326,3 +325,16 @@ export const updateWarrantyClaimStatus = async (req, res) => {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 }
+
+export const fetchClearanceSaleProducts = async (req, res) => {
+	try {
+		const products = await Product.find({ closeOut: true }).lean();
+		if (!products || products.length === 0) {
+			return res.status(404).json({ message: "No clearance sale products found" });
+		}
+		res.status(200).json({ products });
+	} catch (error) {
+		console.log("Error in fetchClearanceSaleProducts controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};

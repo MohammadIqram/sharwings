@@ -21,6 +21,7 @@ import UseScrollRestoration from "./components/UseScrollRestoration";
 import Orders from "./pages/Orders";
 import ClaimWarrantyForm from "./pages/ClaimWarrantyForm";
 import Pdp from "./pages/Pdp";
+import { ClearanceSaleProducts } from "./pages/ClearanceSaleProducts";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -68,6 +69,7 @@ function App() {
 						element={user ? <PurchaseSuccessPage /> : <Navigate to='/login' />}
 					/>
 					<Route path='/purchase-cancel' element={user ? <PurchaseCancelPage /> : <Navigate to='/login' />} />
+					<Route path="/clearance-sale" element={<ClearanceSaleProducts />} />
 				</Routes>
 				<Footer />
 			</div>

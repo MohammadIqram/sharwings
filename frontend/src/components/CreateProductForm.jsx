@@ -16,6 +16,7 @@ const CreateProductForm = () => {
 		category: "",
 		image: "",
 		quantity: 0,
+		clearOut: false,
 	});
 
 	const { createProduct, loading } = useProductStore();
@@ -174,6 +175,22 @@ const CreateProductForm = () => {
 							</option>
 						))}
 					</select>
+				</div>
+
+				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+					<label htmlFor='quantity' className='block text-sm font-medium text-gray-300'>
+						Clearance Sale
+					</label>
+					<input
+						type='checkbox'
+						id='clearOut'
+						name='clearOut'
+						checked={newProduct.clearOut}
+						onChange={(e) => setNewProduct({ ...newProduct, clearOut: e.target.checked })}
+						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
+						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
+						focus:border-emerald-500'
+					/>
 				</div>
 
 				<div className='mt-1 flex items-center'>

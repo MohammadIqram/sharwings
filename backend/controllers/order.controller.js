@@ -109,11 +109,9 @@ export const showAllOrders = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page);
     const skip = (page - 1) * limit;
-    console.log(skip);
-    console.log(page);
     let docs = 1;
     try {
-        const orders = await Order.find({}).skip(skip).limit(limit)
+        const orders = await Order.find({}).skip(skip).limit(limit).sort({ createdAt: -1 })
         .populate("user", "name email")
         .populate("products.product", "name image")
         .lean();
