@@ -42,9 +42,9 @@ export const getFeaturedProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 	try {
-		const { name, description, price, salePrice, image, category, quantity, closeOut } = req.body;
+		const { name, description, price, salePrice, image, category, quantity, clearOut } = req.body;
 		let cloudinaryResponse = null;
-
+		console.log(req.body);
 		if (image) {
 			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
 		}
@@ -57,7 +57,7 @@ export const createProduct = async (req, res) => {
 			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
 			category,
 			quantity,
-			closeOut
+			clearOut
 		});
 
 		res.status(201).json(product);
