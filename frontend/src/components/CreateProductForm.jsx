@@ -25,7 +25,7 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", salePrice: "", category: "", image: "" });
+			setNewProduct({ name: "", description: "", price: "", salePrice: "", category: "", image: "", clearOut: false, quantity: 0 });
 			toast.success("Product created successfully!");
 		} catch {
 			console.log("error creating a product");
