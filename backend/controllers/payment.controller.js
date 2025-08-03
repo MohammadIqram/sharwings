@@ -279,8 +279,7 @@ export const placeOrderWithCashOnDelivery = async (req, res) => {
 
         let totalAmount = 0;
         products.map((product) => {
-            const amount = Math.round(product.salePrice * 100); // Razorpay expects amount in paise
-            totalAmount += amount * product.quantity;
+            totalAmount += product.salePrice * product.quantity;
 
             return {
                 name: product.name,
@@ -301,7 +300,6 @@ export const placeOrderWithCashOnDelivery = async (req, res) => {
 			mode: "cod", // Cash on Delivery
 			address: req.user.address
         });
-		console.log(newOrder);
         await newOrder.save(); 
 
 	await User.updateOne(
