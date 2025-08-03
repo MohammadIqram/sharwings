@@ -16,7 +16,7 @@ const CreateProductForm = () => {
 		category: "",
 		image: "",
 		quantity: 0,
-		clearOut: false,
+		closeOut: false,
 	});
 
 	const { createProduct, loading } = useProductStore();
@@ -25,7 +25,7 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", salePrice: "", category: "", image: "", clearOut: false, quantity: 0 });
+			setNewProduct({ name: "", description: "", price: "", salePrice: "", category: "", image: "", closeOut: false, quantity: 0 });
 			toast.success("Product created successfully!");
 		} catch {
 			console.log("error creating a product");
@@ -183,10 +183,10 @@ const CreateProductForm = () => {
 					</label>
 					<input
 						type='checkbox'
-						id='clearOut'
-						name='clearOut'
-						checked={newProduct.clearOut}
-						onChange={(e) => setNewProduct({ ...newProduct, clearOut: e.target.checked })}
+						id='closeOut'
+						name='closeOut'
+						checked={newProduct.closeOut}
+						onChange={(e) => setNewProduct({ ...newProduct, closeOut: e.target.checked })}
 						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
 						py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500
 						focus:border-emerald-500'

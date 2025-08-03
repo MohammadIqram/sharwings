@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema(
 			default: 0,
 			min: 0,
 		},
-		clearOut: {
+		closeOut: {
 			type: Boolean,
 			default: false,
 		}
