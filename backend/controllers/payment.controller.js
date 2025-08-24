@@ -272,7 +272,7 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
 
 		const emailHelper = new EmailHelper();
 		await emailHelper.sendEmail({
-			to: 'ethawsob18012@gmail.com',
+			to: process.env.NODEMAILER_REVCIEVER,
 			subject: 'new order recieved',
 			text: "you have recieved a new order",
 			html: html
@@ -334,7 +334,7 @@ export const placeOrderWithCashOnDelivery = async (req, res) => {
 		const emailHelper = new EmailHelper();
 		emailHelper.logger();
 		await emailHelper.sendEmail({
-			to: 'ethawsob18012@gmail.com',
+			to: process.env.NODEMAILER_REVCIEVER,
 			subject: 'new order recieved',
 			text: "you have recieved a new order",
 			html: html
