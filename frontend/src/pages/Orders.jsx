@@ -21,7 +21,6 @@ export default function Orders() {
             const res = await axios.get("/orders/history");
             if (res.data.success) {
                 setOrders(res.data.orders);
-                console.log(res.data.orders);
             } else {
                 setOrders([]);
             }

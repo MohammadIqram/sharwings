@@ -5,6 +5,8 @@ import razorpay from "../lib/razorpay.js";
 import crypto from "crypto";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
+import EmailHelper from "../helpers/emailHelper.js";
+import { orderSuccessTemplate } from "../templates/orders.js";
 
 export const createCheckoutSession = async (req, res) => {
 	try {
@@ -251,12 +253,30 @@ export const createCheckoutSessionRazorpay = async (req, res) => {
                     }))
                 ),
             },
-        });   
+        });
+
+		const productName = products.map(p=>p.name).join(", ");
 
 	await User.updateOne(
 			{ _id: req.user._id },
 			{ $set: { cartItems: [] } }
 		);
+		const html = EmailHelper.renderTemplate(orderSuccessTemplate, {
+			name: req.user?.name,
+			orderId: order.id,
+			orderItems: productName,
+			totalAmount: totalAmount,
+			address: req.user?.address,
+			paymentMode: "Online Payment"
+		});
+
+		const emailHelper = new EmailHelper();
+		await emailHelper.sendEmail({
+			to: 'ethawsob18012@gmail.com',
+			subject: 'new order recieved',
+			text: "you have recieved a new order",
+			html: html
+		});
         res.status(200).json({ id: order.id, totalAmount: totalAmount / 100 });
     } catch (error) {
         console.error("Error processing checkout:", error);
@@ -285,7 +305,7 @@ export const placeOrderWithCashOnDelivery = async (req, res) => {
                 name: product.name,
                 image: product.image,
                 quantity: product.quantity || 1,
-                price: amount,
+                price: product.salePrice,
             };
         });
 		const checkoutLineItems =  products.map((product) => ({
@@ -300,7 +320,25 @@ export const placeOrderWithCashOnDelivery = async (req, res) => {
 			mode: "cod", // Cash on Delivery
 			address: req.user.address
         });
-        await newOrder.save(); 
+        await newOrder.save();
+			const productName = products.map(p=>p.name).join(", ");
+			const html = EmailHelper.renderTemplate(orderSuccessTemplate, {
+			name: req.user?.name,
+			orderId: newOrder._id,
+			orderItems: productName,
+			totalAmount: totalAmount,
+			address: req.user?.address,
+			paymentMode: "Cash on Delivery"
+		});
+
+		const emailHelper = new EmailHelper();
+		emailHelper.logger();
+		await emailHelper.sendEmail({
+			to: 'ethawsob18012@gmail.com',
+			subject: 'new order recieved',
+			text: "you have recieved a new order",
+			html: html
+		});
 
 	await User.updateOne(
 			{ _id: req.user._id },

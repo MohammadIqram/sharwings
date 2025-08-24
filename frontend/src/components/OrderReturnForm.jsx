@@ -45,14 +45,11 @@ export default function ReturnModal({
     }
     try {
         const res = await axiosInstance.post('/orders/return', {form, selectedOrder});
-        if (res.data.success) {
-            toast.success("Return request submitted successfully!");
+        if (res.data && res.data.success) {
+            toast.success(res.data.message);
             setError(null);
             setForm({ description: "", reason: "" });
             onClose();
-        }
-        else {
-            setError(res.data.message || "Failed to submit return request. Please try again.");
         }
     } catch {
         setError("Failed to submit return request. Please try again later.");

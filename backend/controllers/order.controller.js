@@ -43,7 +43,7 @@ export const requestOrderReturn = async (req, res) => {
         
         await order.save();
 
-        res.json({ success: true, message: "Return request submitted successfully" });
+        res.status(200).json({ success: true, message: "Return request submitted successfully" });
     } catch (error) {
         console.error("Error in requestOrderReturn controller", error.message);
         res.status(500).json({ success: false, message: "Server error", error: error.message });

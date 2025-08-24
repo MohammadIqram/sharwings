@@ -34,7 +34,9 @@ export const useProductStore = create((set) => ({
 		set({ loading: true });
 		try {
 			const response = await axios.get(`/products/category/${category}`);
-			set({ products: response.data.products, loading: false });
+			if (response.data && response.data.success) {
+				set({ products: response.data.products, loading: false });
+			}
 		} catch (error) {
 			set({ error: "Failed to fetch products", loading: false });
 			toast.error(error.response.data.error || "Failed to fetch products");
@@ -110,7 +112,6 @@ export const useProductStore = create((set) => ({
 			set({ products: response?.data?.products, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch clearance sale products", loading: false });
-			toast.error(error?.response?.data?.error || "Failed to fetch clearance sale products");
 		} finally {
 			set({ loading: false });
 		}
