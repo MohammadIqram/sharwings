@@ -10,6 +10,7 @@ const OrdersTable = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   useEffect(() => {
     const getReturnedProducts = async () => {
@@ -31,6 +32,26 @@ const OrdersTable = () => {
 
     getReturnedProducts();
   }, [page]);
+
+    const handleOrderStatusChange = async (e) => {
+    try {
+      setLoading(true);
+      const response = await axios.put(`/orders/status/${e.target?.dataset?.orderid}`, {
+        status: e.target?.dataset?.id,
+      });
+      toast.success(response.data.msg);
+      setOrdersReturn((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === e.target?.dataset?.orderid ? { ...order, returnRequest: { ...order.returnRequest, status: e.target?.dataset?.id } } : order
+        )
+      );
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to change the status of the product. Try again sometime.");
+    } finally {
+      setLoading(false);
+      setOpenMenuId(null);
+    }
+  }
 
   return loading ? (
     <TableSkeleton />
@@ -93,6 +114,9 @@ const OrdersTable = () => {
             >
               Address
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Actions
+            </th>
           </tr>
         </thead>
 
@@ -152,6 +176,48 @@ const OrdersTable = () => {
                   {order.address.phone}
                 </> : <p>N/A</p>
                   }
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div
+                  onMouseEnter={() => setOpenMenuId(order._id)}
+                  onMouseLeave={() => setOpenMenuId(null)}
+                  className="inline-block relative"
+                >
+                  <button
+                    data-pid={order._id}
+                    className="text-red-400 hover:text-red-300 relative"
+                    style={{ position: "relative" }}
+                  >
+                    <EllipsisVertical className="h-5 w-5" color="#ffffff" />
+                  </button>
+                  {openMenuId === order._id && (
+                    <div
+                      className="absolute right-0 -top-[1px] mt-2 w-40 bg-gray-900 border-2 border-yellow-700 rounded shadow-lg z-50"
+                      style={{ zIndex: 9999 }}
+                    >
+                      <ul className="relative">
+                        {
+                          loading && <Loader className="absolute top-50 left-20 h-5 w-5 animate-spin mx-auto my-2" />
+                        }
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="pending" onClick={handleOrderStatusChange}>
+                          pending
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="processed" onClick={handleOrderStatusChange}>
+                          processed
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="shipped" onClick={handleOrderStatusChange}>
+                          shipped
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="delivered" onClick={handleOrderStatusChange}>
+                          delivered
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-white" data-orderid={order._id} data-id="cancelled" onClick={handleOrderStatusChange}>
+                          cancelled
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </td>
             </tr>

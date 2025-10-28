@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import axios from "../lib/axios";
 import ReturnModal from "../components/OrderReturnForm";
 import OrderReturnProgressBar from "../components/OrderReturnProgressBar";
+import OrderStatus from "../components/OrderStatus";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -70,9 +71,13 @@ export default function Orders() {
               </div>
               <div className="flex justify-between items-center mt-4">
                     {
-                      order.returnRequest && (
+                      order.returnRequest ? (
                       <div>
                         <OrderReturnProgressBar request={order.returnRequest} />
+                      </div>
+                      ) : (
+                      <div className="mt-2 md:mt-0">
+                        <OrderStatus status={order.status} />
                       </div>
                       )
                     }

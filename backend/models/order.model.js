@@ -57,7 +57,12 @@ const orderSchema = new mongoose.Schema(
 			enum: ['cod', 'online'],
 			default: 'cod',
 			required: true
-		}
+		},
+	status: {
+		type: String,
+		enum: ["pending", "processed", "shipped", "delivered", "cancelled"],
+		default: "pending",
+	},
 	},
 	{ timestamps: true }
 );
