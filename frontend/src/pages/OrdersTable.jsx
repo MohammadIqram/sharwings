@@ -36,15 +36,21 @@ const OrdersTable = () => {
     const handleOrderStatusChange = async (e) => {
     try {
       setLoading(true);
-      const response = await axios.put(`/orders/status/${e.target?.dataset?.orderid}`, {
+      const orderId = e.target?.dataset?.orderid;
+      const newStatus = e.target?.dataset?.id;
+      const response = await axios.put(`/orders/status/${orderId}`, {
         status: e.target?.dataset?.id,
       });
       toast.success(response.data.msg);
-      setOrdersReturn((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === e.target?.dataset?.orderid ? { ...order, returnRequest: { ...order.returnRequest, status: e.target?.dataset?.id } } : order
-        )
-      );
+      // Update state to reflect the change immediately
+      const updatedOrders = ordersReturn.map((order) => {
+        if (order._id === orderId) {
+          return { ...order, status: newStatus };
+        }
+        return order;
+      });
+      setOrdersReturn(updatedOrders);
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to change the status of the product. Try again sometime.");
     } finally {
@@ -114,6 +120,12 @@ const OrdersTable = () => {
             >
               Address
             </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+            >
+              Status
+            </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
               Actions
             </th>
@@ -177,6 +189,11 @@ const OrdersTable = () => {
                 </> : <p>N/A</p>
                   }
                 </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-300">
+                  {order?.status}
+              </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div
