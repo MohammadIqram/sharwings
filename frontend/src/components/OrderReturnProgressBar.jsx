@@ -4,7 +4,7 @@
 export default function OrderReturnProgressBar({ request }) {
 
   return (
-    <div className="flex items-center gap-2 my-4">
+    <div className="flex items-center gap-2 my-4 flex-wrap">
         <div className="flex items-center">
           <div
             className={`w-7 h-7 flex items-center justify-center rounded-full border-2
@@ -25,7 +25,7 @@ export default function OrderReturnProgressBar({ request }) {
             Initiated
           </span>
             <div
-              className={`w-8 h-1 rounded ${
+              className={`hidden md:block w-8 h-1 rounded ${
                 request.status === 'Requested' ? "bg-emerald-400" : "bg-gray-300"
               }`}
             />
@@ -50,7 +50,7 @@ export default function OrderReturnProgressBar({ request }) {
             Approved
           </span>
             <div
-              className={`w-8 h-1 rounded ${
+              className={`hidden md:block w-8 h-1 rounded ${
                 request.status === 'Approved' ? "bg-emerald-400" : "bg-gray-300"
               }`}
             />

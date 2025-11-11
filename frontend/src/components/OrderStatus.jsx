@@ -29,8 +29,8 @@ export default function OrderStatus({ status = "" }) {
 
   return (
     <div className="w-full">
-      <div className="relative px-2 py-4">
-        {/* horizontal connector line */}
+      {/* desktop / tablet layout */}
+      <div className="hidden sm:block relative px-2 py-4">
         <div className="absolute left-10 right-10 top-8 h-1 bg-gray-700 rounded overflow-hidden">
           <div
             className="h-full bg-emerald-600 transition-all duration-500"
@@ -40,18 +40,30 @@ export default function OrderStatus({ status = "" }) {
 
         <div className="flex justify-between items-start relative z-20 px-2">
           {STEPS.map((step, idx) => (
-            <div key={step.key} className="flex-1 flex justify-start">
-              <div className="relative">
+            <div key={step.key} className="flex-1 flex justify-center">
+              <div className="relative flex flex-col items-center">
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center ${
-                    idx < activeIndex ? "bg-emerald-600 text-white" : idx === activeIndex ? "bg-emerald-50 ring-2 ring-emerald-400 text-emerald-700" : "bg-gray-800 text-gray-400"
+                    idx < activeIndex
+                      ? "bg-emerald-600 text-white"
+                      : idx === activeIndex
+                      ? "bg-emerald-50 ring-2 ring-emerald-400 text-emerald-700"
+                      : "bg-gray-800 text-gray-400"
                   } shadow-sm`}
                 >
                   {idx < activeIndex ? <CheckCircle size={16} /> : createElement(step.icon, { size: 16 })}
                 </div>
 
                 <div className="mt-3 text-center w-28">
-                  <div className={`text-xs ${idx < activeIndex ? "text-emerald-200" : idx === activeIndex ? "text-emerald-100 font-semibold" : "text-gray-400"}`}>
+                  <div
+                    className={`text-xs ${
+                      idx < activeIndex
+                        ? "text-emerald-200"
+                        : idx === activeIndex
+                        ? "text-emerald-100 font-semibold"
+                        : "text-gray-400"
+                    }`}
+                  >
                     {step.label}
                   </div>
                 </div>
@@ -61,11 +73,49 @@ export default function OrderStatus({ status = "" }) {
         </div>
       </div>
 
-      <div className="mt-3 text-sm text-gray-300 flex items-center justify-between">
-        <div>
-          Status: <span className="font-semibold text-white ml-2">{s || "N/A"}</span>
+      {/* mobile layout: compact row with icons and small progress bar */}
+      <div className="block sm:hidden">
+        <div className="flex items-center justify-between gap-3 px-2">
+          {STEPS.map((step, idx) => {
+            const isDone = idx < activeIndex;
+            const isActive = idx === activeIndex;
+            return (
+              <div key={step.key} className="flex-1 flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    isDone ? "bg-emerald-600 text-white" : isActive ? "bg-emerald-50 ring-2 ring-emerald-400 text-emerald-700" : "bg-gray-800 text-gray-400"
+                  }`}
+                >
+                  {isDone ? <CheckCircle size={14} /> : createElement(step.icon, { size: 14 })}
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="text-xs text-gray-400">Estimated delivery: {s === "shipped" ? "2-4 days" : "—"}</div>
+
+        <div className="mt-2 px-4">
+          <div className="w-full h-1 bg-gray-700 rounded overflow-hidden">
+            <div
+              className="h-full bg-emerald-600 transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between px-2 text-xs text-gray-300">
+          <div>
+            <span className="text-black font-medium">Status:</span> <span className="font-semibold text-gray-600 ml-2">{status || "N/A"}</span>
+          </div>
+          {/* <div className="text-xs text-gray-400">{s === "shipped" ? "Est. 2-4 days" : "—"}</div> */}
+        </div>
+      </div>
+
+      {/* shared footer for desktop also */}
+      <div className="mt-3 text-sm text-gray-300 hidden sm:flex items-center justify-between">
+        <div>
+          <span className="text-black font-medium">Status:</span> <span className="font-semibold text-gray-600 ml-2">{status || "N/A"}</span>
+        </div>
+        {/* <div className="text-xs text-gray-400">Estimated delivery: {s === "shipped" ? "2-4 days" : "—"}</div> */}
       </div>
     </div>
   );
