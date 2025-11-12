@@ -17,6 +17,7 @@ export default function Pdp() {
             return;
         } else {
             // add to cart
+            product.quantity = 1;
             addToCart(product);
         }
     };
