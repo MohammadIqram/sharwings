@@ -24,6 +24,8 @@ import Pdp from "./pages/Pdp";
 import { ClearanceSaleProducts } from "./pages/ClearanceSaleProducts";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import Contact from "./pages/Contact";
+import Career from "./pages/Career";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -74,6 +76,8 @@ function App() {
 					<Route path="/clearance-sale" element={<ClearanceSaleProducts />} />
 					<Route path='/privacy' element={<PrivacyPolicy />} />
 					<Route path='/terms' element={<TermsOfService />} />
+					<Route path='/contact' element={<Contact />} />
+					<Route path='/careers' element={<Career />} />
 					<Route path='*' element={<Navigate to='/' />} />
 				</Routes>
 				<Footer />
