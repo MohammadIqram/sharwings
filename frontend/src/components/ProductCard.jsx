@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
         className="relative mx-3 mt-3 flex h-56 overflow-hidden rounded-xl bg-gray-900"
       >
         <img
-          className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-300 hover:scale-105"
           src={product.image}
           alt={product.name}
         />

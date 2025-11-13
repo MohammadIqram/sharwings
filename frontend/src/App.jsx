@@ -22,6 +22,8 @@ import Orders from "./pages/Orders";
 import ClaimWarrantyForm from "./pages/ClaimWarrantyForm";
 import Pdp from "./pages/Pdp";
 import { ClearanceSaleProducts } from "./pages/ClearanceSaleProducts";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 function App() {
 	const { user, checkAuth, checkingAuth } = useUserStore();
@@ -70,6 +72,9 @@ function App() {
 					/>
 					<Route path='/purchase-cancel' element={user ? <PurchaseCancelPage /> : <Navigate to='/login' />} />
 					<Route path="/clearance-sale" element={<ClearanceSaleProducts />} />
+					<Route path='/privacy' element={<PrivacyPolicy />} />
+					<Route path='/terms' element={<TermsOfService />} />
+					<Route path='*' element={<Navigate to='/' />} />
 				</Routes>
 				<Footer />
 			</div>
