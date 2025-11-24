@@ -10,7 +10,7 @@ const Footer = () => (
                 <div className="flex flex-col gap-2 min-w-[120px]">
                     <span className="font-semibold text-emerald-400 mb-1 text-lg">Company</span>
                     <Link to="/aboutus" className="hover:text-emerald-400 text-[1.08rem]">About Us</Link>
-                    <Link to="/contact" className="hover:text-emerald-400 text-[1.08rem]">Contact</Link>
+                    <Link to="/contact" className="hover:text-emerald-400 text-[1.08rem]">Contact Us</Link>
                     <Link to="/careers" className="hover:text-emerald-400 text-[1.08rem]">Careers</Link>
                 </div>
                 {/* Column 2 */}

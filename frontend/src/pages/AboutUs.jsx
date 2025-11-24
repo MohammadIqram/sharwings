@@ -54,7 +54,6 @@ export default function AboutUs() {
             <MapPin className="text-emerald-600 mb-2" size={32} />
             <span className="font-semibold text-gray-800 mb-1">Address</span>
             <span className="text-center text-gray-700 text-sm">
-              Osram, Ls Cables, Luker Fans<br />
               Lalbazar, Srinagar, Jammu & Kashmir<br />
               Pincode: 190023
             </span>

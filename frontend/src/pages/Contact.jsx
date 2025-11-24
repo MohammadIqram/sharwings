@@ -1,10 +1,9 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 export default function Contact() {
   const contact = {
-    address: "Osram, Ls Cables, Luker Fans Lalbazar, Srinagar, Jammu & Kashmir Pincode: 190023",
+    address: "Lalbazar, Srinagar, Jammu & Kashmir Pincode: 190023",
     phone: "+91 780953951, +91 9682124722",
     email: "sharwings@outlook.com",
   };
